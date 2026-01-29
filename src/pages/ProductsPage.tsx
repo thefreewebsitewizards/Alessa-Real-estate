@@ -1,7 +1,59 @@
+import { useMemo, useState } from 'react'
+import { Link } from 'react-router-dom'
 import Footer from '../components/Footer'
 import Navbar from '../components/Navbar'
+import { useCart } from '../data/cart'
+import { formatPrice, products } from '../data/products'
 
 function ProductsPage() {
+  const { addItem } = useCart()
+  const componentOptions = useMemo(() => ['Frames', 'Forks', 'Bars', 'Cranks'], [])
+  const teamOptions = useMemo(() => ['ZeroNine', 'Supercross', 'Aggro Factory'], [])
+  const [selectedComponents, setSelectedComponents] = useState<string[]>(['Frames'])
+  const [selectedTeams, setSelectedTeams] = useState<string[]>(['ZeroNine', 'Aggro Factory'])
+  const [maxPrice, setMaxPrice] = useState(1000)
+  const [sortOption, setSortOption] = useState('Newest Drop')
+  const [visibleCount, setVisibleCount] = useState(6)
+
+  const catalogProducts = useMemo(() => products.filter((product) => product.isCatalog), [])
+
+  const filteredProducts = useMemo(() => {
+    let filtered = catalogProducts.filter((product) => product.price <= maxPrice)
+
+    if (selectedComponents.length > 0) {
+      filtered = filtered.filter((product) => {
+        const component = product.component ?? product.category
+        if (!componentOptions.includes(component)) {
+          return true
+        }
+        return selectedComponents.includes(component)
+      })
+    }
+
+    if (selectedTeams.length > 0) {
+      filtered = filtered.filter((product) => {
+        const team = product.team ?? ''
+        if (!teamOptions.includes(team)) {
+          return true
+        }
+        return selectedTeams.includes(team)
+      })
+    }
+
+    if (sortOption === 'Price: Low to High') {
+      filtered = [...filtered].sort((a, b) => a.price - b.price)
+    } else if (sortOption === 'Price: High to Low') {
+      filtered = [...filtered].sort((a, b) => b.price - a.price)
+    }
+
+    return filtered
+  }, [catalogProducts, componentOptions, maxPrice, selectedComponents, selectedTeams, sortOption, teamOptions])
+
+  const visibleProducts = useMemo(
+    () => filteredProducts.slice(0, Math.min(filteredProducts.length, visibleCount)),
+    [filteredProducts, visibleCount],
+  )
+
   return (
     <div className="products-theme dark bg-background-light dark:bg-background-dark text-slate-900 dark:text-white font-display overflow-x-hidden min-h-screen flex flex-col">
       <Navbar />
@@ -18,9 +70,14 @@ function ProductsPage() {
               <div className="space-y-2">
                 <label className="flex items-center gap-3 cursor-pointer group">
                   <input
-                    defaultChecked
                     className="size-4 rounded-none border-neutral-600 bg-transparent text-primary focus:ring-0 focus:ring-offset-0 focus:border-primary checked:bg-primary checked:border-primary transition-colors"
                     type="checkbox"
+                    checked={selectedComponents.includes('Frames')}
+                    onChange={(event) => {
+                      setSelectedComponents((prev) =>
+                        event.target.checked ? [...prev, 'Frames'] : prev.filter((item) => item !== 'Frames'),
+                      )
+                    }}
                   />
                   <span className="text-neutral-300 group-hover:text-white text-sm uppercase font-medium">Frames</span>
                 </label>
@@ -28,6 +85,12 @@ function ProductsPage() {
                   <input
                     className="size-4 rounded-none border-neutral-600 bg-transparent text-primary focus:ring-0 focus:ring-offset-0 focus:border-primary checked:bg-primary checked:border-primary transition-colors"
                     type="checkbox"
+                    checked={selectedComponents.includes('Forks')}
+                    onChange={(event) => {
+                      setSelectedComponents((prev) =>
+                        event.target.checked ? [...prev, 'Forks'] : prev.filter((item) => item !== 'Forks'),
+                      )
+                    }}
                   />
                   <span className="text-neutral-300 group-hover:text-white text-sm uppercase font-medium">Forks</span>
                 </label>
@@ -35,6 +98,12 @@ function ProductsPage() {
                   <input
                     className="size-4 rounded-none border-neutral-600 bg-transparent text-primary focus:ring-0 focus:ring-offset-0 focus:border-primary checked:bg-primary checked:border-primary transition-colors"
                     type="checkbox"
+                    checked={selectedComponents.includes('Bars')}
+                    onChange={(event) => {
+                      setSelectedComponents((prev) =>
+                        event.target.checked ? [...prev, 'Bars'] : prev.filter((item) => item !== 'Bars'),
+                      )
+                    }}
                   />
                   <span className="text-neutral-300 group-hover:text-white text-sm uppercase font-medium">Bars</span>
                 </label>
@@ -42,6 +111,12 @@ function ProductsPage() {
                   <input
                     className="size-4 rounded-none border-neutral-600 bg-transparent text-primary focus:ring-0 focus:ring-offset-0 focus:border-primary checked:bg-primary checked:border-primary transition-colors"
                     type="checkbox"
+                    checked={selectedComponents.includes('Cranks')}
+                    onChange={(event) => {
+                      setSelectedComponents((prev) =>
+                        event.target.checked ? [...prev, 'Cranks'] : prev.filter((item) => item !== 'Cranks'),
+                      )
+                    }}
                   />
                   <span className="text-neutral-300 group-hover:text-white text-sm uppercase font-medium">Cranks</span>
                 </label>
@@ -52,9 +127,14 @@ function ProductsPage() {
               <div className="space-y-2">
                 <label className="flex items-center gap-3 cursor-pointer group">
                   <input
-                    defaultChecked
                     className="size-4 rounded-none border-neutral-600 bg-transparent text-primary focus:ring-0 focus:ring-offset-0 focus:border-primary checked:bg-primary checked:border-primary transition-colors"
                     type="checkbox"
+                    checked={selectedTeams.includes('ZeroNine')}
+                    onChange={(event) => {
+                      setSelectedTeams((prev) =>
+                        event.target.checked ? [...prev, 'ZeroNine'] : prev.filter((item) => item !== 'ZeroNine'),
+                      )
+                    }}
                   />
                   <span className="text-neutral-300 group-hover:text-white text-sm uppercase font-medium">ZeroNine</span>
                 </label>
@@ -62,14 +142,27 @@ function ProductsPage() {
                   <input
                     className="size-4 rounded-none border-neutral-600 bg-transparent text-primary focus:ring-0 focus:ring-offset-0 focus:border-primary checked:bg-primary checked:border-primary transition-colors"
                     type="checkbox"
+                    checked={selectedTeams.includes('Supercross')}
+                    onChange={(event) => {
+                      setSelectedTeams((prev) =>
+                        event.target.checked ? [...prev, 'Supercross'] : prev.filter((item) => item !== 'Supercross'),
+                      )
+                    }}
                   />
                   <span className="text-neutral-300 group-hover:text-white text-sm uppercase font-medium">Supercross</span>
                 </label>
                 <label className="flex items-center gap-3 cursor-pointer group">
                   <input
-                    defaultChecked
                     className="size-4 rounded-none border-neutral-600 bg-transparent text-primary focus:ring-0 focus:ring-offset-0 focus:border-primary checked:bg-primary checked:border-primary transition-colors"
                     type="checkbox"
+                    checked={selectedTeams.includes('Aggro Factory')}
+                    onChange={(event) => {
+                      setSelectedTeams((prev) =>
+                        event.target.checked
+                          ? [...prev, 'Aggro Factory']
+                          : prev.filter((item) => item !== 'Aggro Factory'),
+                      )
+                    }}
                   />
                   <span className="text-neutral-300 group-hover:text-white text-sm uppercase font-medium">Aggro Factory</span>
                 </label>
@@ -83,6 +176,8 @@ function ProductsPage() {
                   max="1000"
                   min="0"
                   type="range"
+                  value={maxPrice}
+                  onChange={(event) => setMaxPrice(Number(event.target.value))}
                 />
                 <div className="flex justify-between mt-2 text-xs text-neutral-400 font-mono">
                   <span>$0</span>
@@ -104,7 +199,11 @@ function ProductsPage() {
             </div>
             <div className="flex items-center gap-4">
               <span className="text-neutral-500 text-xs uppercase font-bold tracking-widest">Sort By:</span>
-              <select className="bg-background-dark text-white text-sm font-bold uppercase border-none focus:ring-0 cursor-pointer hover:text-primary transition-colors pl-0 pr-8 py-0">
+              <select
+                className="bg-background-dark text-white text-sm font-bold uppercase border-none focus:ring-0 cursor-pointer hover:text-primary transition-colors pl-0 pr-8 py-0"
+                value={sortOption}
+                onChange={(event) => setSortOption(event.target.value)}
+              >
                 <option>Newest Drop</option>
                 <option>Price: Low to High</option>
                 <option>Price: High to Low</option>
@@ -112,160 +211,90 @@ function ProductsPage() {
             </div>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <div className="group relative bg-surface-dark border border-neutral-800 hover:border-primary/50 transition-all duration-300 flex flex-col">
-              <div className="absolute top-0 left-0 z-10">
-                <span className="bg-primary text-black text-xs font-bold px-3 py-1 uppercase tracking-wider inline-block">
-                  Limited Drop
-                </span>
-              </div>
-              <div className="relative w-full pt-[100%] overflow-hidden bg-neutral-900">
-                <img
-                  alt="Carbon fiber BMX racing frame side profile"
-                  className="absolute inset-0 w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-500 grayscale group-hover:grayscale-0 mix-blend-luminosity group-hover:mix-blend-normal"
-                  data-alt="Carbon fiber BMX racing frame side profile"
-                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuAi6nUuLJZPD6FpYpRXFPM3jYJxrMPhql4lqxLOhh5WIxmQ4CYBopWA1_EeWJpq30hqrx6bPI9uuptr7g-u1MxtI87irCObQ1oLi3BB94H-is729IOG3NzHFeheQB6TmYzKXX8ojOtH5N5PUcBzTaQcMiXLu78qCb66SzvsBa2UIco1TNxnB7WoMP4-mDsZmRif_h_rIKvyu4YuBOi6F66aRPHIbf5pl4Bh3lBVcr4evWVqH_rBFmsDPeIE3QV8mmWftRAclkrUNA"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-surface-dark to-transparent opacity-60" />
-              </div>
-              <div className="p-5 flex flex-col flex-1">
-                <div className="mb-1 text-xs text-neutral-500 uppercase font-mono tracking-widest">Frames</div>
-                <h3 className="text-white text-lg font-bold uppercase leading-tight mb-2 group-hover:text-primary transition-colors">
-                  Mach 1 Carbon XL
-                </h3>
-                <div className="mt-auto flex items-center justify-between border-t border-neutral-800 pt-4">
-                  <span className="text-primary font-bold font-mono text-lg">$699.00</span>
-                  <button className="text-white hover:text-primary transition-colors">
-                    <span className="material-symbols-outlined">add_circle</span>
-                  </button>
-                </div>
-              </div>
-            </div>
-            <div className="group relative bg-surface-dark border border-neutral-800 hover:border-primary/50 transition-all duration-300 flex flex-col">
-              <div className="relative w-full pt-[100%] overflow-hidden bg-neutral-900">
-                <img
-                  alt="BMX racing handlebars black metal"
-                  className="absolute inset-0 w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-500 grayscale group-hover:grayscale-0 mix-blend-luminosity group-hover:mix-blend-normal"
-                  data-alt="BMX racing handlebars black metal"
-                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuBMBAvtYNDXl2xycGVgRBQMqetgnA3OHH3as-jrTRO8JZzA8bxwiwjF_uU_oEj5zjvFfJeyaL_xi1nCU4GMEs5_CjzIwkN9n2pW4nd5hJYrv6e1ryCV8qJqsv16wXQTJo3JwlcZD1Sj3TBmyzefjrkaFiZIKHYZrAiarXogSixPsBGTCk_EC7tp00A1hdq2YZuIerQhffd2RqThYVdxVG4VJGLcr71hUUPkABNQYRnD1KPXRb4V3m0ujD4qp7tOO1sQskeZLDFbUw"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-surface-dark to-transparent opacity-60" />
-              </div>
-              <div className="p-5 flex flex-col flex-1">
-                <div className="mb-1 text-xs text-neutral-500 uppercase font-mono tracking-widest">Control</div>
-                <h3 className="text-white text-lg font-bold uppercase leading-tight mb-2 group-hover:text-primary transition-colors">
-                  Vandal Pro Bars 8.5"
-                </h3>
-                <div className="mt-auto flex items-center justify-between border-t border-neutral-800 pt-4">
-                  <span className="text-primary font-bold font-mono text-lg">$89.00</span>
-                  <button className="text-white hover:text-primary transition-colors">
-                    <span className="material-symbols-outlined">add_circle</span>
-                  </button>
-                </div>
-              </div>
-            </div>
-            <div className="group relative bg-surface-dark border border-neutral-800 hover:border-primary/50 transition-all duration-300 flex flex-col">
-              <div className="absolute top-0 left-0 z-10">
-                <span className="bg-white text-black text-xs font-bold px-3 py-1 uppercase tracking-wider inline-block">
-                  New Arrival
-                </span>
-              </div>
-              <div className="relative w-full pt-[100%] overflow-hidden bg-neutral-900">
-                <img
-                  alt="Precision machined BMX sprocket silver"
-                  className="absolute inset-0 w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-500 grayscale group-hover:grayscale-0 mix-blend-luminosity group-hover:mix-blend-normal"
-                  data-alt="Precision machined BMX sprocket silver"
-                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuCul7AGZ4hr_8n3X4N01NrtLeWT_VYYhhF4glAtCMhgQqcTtYIV_TJQEHBVJ9mrGGi7XvTo6Z3idyeP76ogWb_bkSfdp1N2NUfW2I0PqGrjJe0j68ywsO3X2Ry0GS8JcIjZ7iEbelwCQxG0ZeRP9eVklpLGrwrEQpdk4BW6ziXTJI1iIdot_1GllYpnB0vHfEcYAPoDK49om0BiC1G2LtYspvo74gRjdLPOyMnzboJb8ga22FrFuy2elkW4CA1Dy8FuwLXFiHuXqQ"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-surface-dark to-transparent opacity-60" />
-              </div>
-              <div className="p-5 flex flex-col flex-1">
-                <div className="mb-1 text-xs text-neutral-500 uppercase font-mono tracking-widest">Drivetrain</div>
-                <h3 className="text-white text-lg font-bold uppercase leading-tight mb-2 group-hover:text-primary transition-colors">
-                  Sector 9 Sprocket
-                </h3>
-                <div className="mt-auto flex items-center justify-between border-t border-neutral-800 pt-4">
-                  <span className="text-primary font-bold font-mono text-lg">$45.00</span>
-                  <button className="text-white hover:text-primary transition-colors">
-                    <span className="material-symbols-outlined">add_circle</span>
-                  </button>
-                </div>
-              </div>
-            </div>
-            <div className="group relative bg-surface-dark border border-neutral-800 hover:border-primary/50 transition-all duration-300 flex flex-col">
-              <div className="relative w-full pt-[100%] overflow-hidden bg-neutral-900">
-                <img
-                  alt="BMX bicycle wheel close up spokes"
-                  className="absolute inset-0 w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-500 grayscale group-hover:grayscale-0 mix-blend-luminosity group-hover:mix-blend-normal"
-                  data-alt="BMX bicycle wheel close up spokes"
-                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuC-3vMP9oJ9nTHR0FUWE1viU3D0maUSKLzoj0T6iB_SwQv1ZxUhUoqnQQ_b6pJnIUcup9I2Falmka3VVisf2W63wbHkaMn8s8opIGIcObqg8UbNkVdf3sjtJoOkmuMBVuyntMnHSyU9Z_8huM4FNopPkxHg3gYN-ZblV8e5qXE_GNxGe722Jsi3O5JBENx7Hh4j_76BAdASkts2KYI8Ks33qbsGEWsNyyEpIVEG0_8YaRjUB-LsDXP4AaR04iKMlxaoAZs5m688bg"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-surface-dark to-transparent opacity-60" />
-              </div>
-              <div className="p-5 flex flex-col flex-1">
-                <div className="mb-1 text-xs text-neutral-500 uppercase font-mono tracking-widest">Wheels</div>
-                <h3 className="text-white text-lg font-bold uppercase leading-tight mb-2 group-hover:text-primary transition-colors">
-                  Turbine Wheelset 20"
-                </h3>
-                <div className="mt-auto flex items-center justify-between border-t border-neutral-800 pt-4">
-                  <span className="text-primary font-bold font-mono text-lg">$349.00</span>
-                  <button className="text-white hover:text-primary transition-colors">
-                    <span className="material-symbols-outlined">add_circle</span>
-                  </button>
-                </div>
-              </div>
-            </div>
-            <div className="group relative bg-surface-dark border border-neutral-800 hover:border-primary/50 transition-all duration-300 flex flex-col">
-              <div className="relative w-full pt-[100%] overflow-hidden bg-neutral-900">
-                <img
-                  alt="BMX bicycle pedal close up"
-                  className="absolute inset-0 w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-500 grayscale group-hover:grayscale-0 mix-blend-luminosity group-hover:mix-blend-normal"
-                  data-alt="BMX bicycle pedal close up"
-                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuCFrp0IaRwW2Nmlik__ISq9lMuJE3gcY6zWXPXmjGXSJFSizKPDe4pCsHkmVPWdEhc4VSN02EohtI7S4l8usmfStMNigB8KdqVXAAy1aGDnnsMWIJExDAcmA3JiGbR_AAnqeo8ZAh_N6xskHgeeVpgQULzDzv-SWOloDaqEAC8PdedEO0qXpHuUFbqLDSswGCbiI4sd0914KJl2rTt5Hz5xmI7IE5Tk_RTs4J6_VLccnNlxZIko2ZL3zjsLEGQZ7egD-iT9L1kcpw"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-surface-dark to-transparent opacity-60" />
-              </div>
-              <div className="p-5 flex flex-col flex-1">
-                <div className="mb-1 text-xs text-neutral-500 uppercase font-mono tracking-widest">Pedals</div>
-                <h3 className="text-white text-lg font-bold uppercase leading-tight mb-2 group-hover:text-primary transition-colors">
-                  Grip Lock Pedals
-                </h3>
-                <div className="mt-auto flex items-center justify-between border-t border-neutral-800 pt-4">
-                  <span className="text-primary font-bold font-mono text-lg">$65.00</span>
-                  <button className="text-white hover:text-primary transition-colors">
-                    <span className="material-symbols-outlined">add_circle</span>
-                  </button>
-                </div>
-              </div>
-            </div>
-            <div className="group relative bg-surface-dark border border-neutral-800 hover:border-primary/50 transition-all duration-300 flex flex-col">
-              <div className="absolute top-0 left-0 z-10">
-                <span className="bg-neutral-600 text-white text-xs font-bold px-3 py-1 uppercase tracking-wider inline-block">
-                  Sold Out
-                </span>
-              </div>
-              <div className="relative w-full pt-[100%] overflow-hidden bg-neutral-900">
-                <img
-                  alt="BMX racing jersey on hanger"
-                  className="absolute inset-0 w-full h-full object-cover opacity-50 group-hover:scale-105 transition-all duration-500 grayscale"
-                  data-alt="BMX racing jersey on hanger"
-                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuCVqNHq0VtT9Z-l9SJEbpcTQgjTnu7UEdd2blmlygiphnDDW1xzzsdJPFCPH_TbW3MoDAbBMHDYPqg7mgdI7_ti9TAV-Y2d5M1uIhx6LE9yUMa6DlfTBhhnTwV5Mu4nz4ZCKSdR0dK-TJStdD-eu6aJfd0FiiMX4p0yi5HdbSaTb8K7yqqg2THYblJeDI33kx4CWCss5UNYsBIWmFYTZOIjvTTcjjBYSWyds7WUT6mifvHbt9e2wfy6c4wBY_motJW96DemzN9R2g"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-surface-dark to-transparent opacity-60" />
-              </div>
-              <div className="p-5 flex flex-col flex-1 opacity-60">
-                <div className="mb-1 text-xs text-neutral-500 uppercase font-mono tracking-widest">Apparel</div>
-                <h3 className="text-white text-lg font-bold uppercase leading-tight mb-2">Team Jersey '24</h3>
-                <div className="mt-auto flex items-center justify-between border-t border-neutral-800 pt-4">
-                  <span className="text-neutral-400 font-bold font-mono text-lg line-through">$55.00</span>
-                  <button className="text-neutral-600 cursor-not-allowed">
-                    <span className="material-symbols-outlined">block</span>
-                  </button>
-                </div>
-              </div>
-            </div>
+            {visibleProducts.map((product) => {
+              const badgeTone = product.isSoldOut ? 'neutral' : product.catalogBadge
+              const badgeLabel =
+                badgeTone === 'primary' ? 'Limited Drop' : badgeTone === 'light' ? 'New Arrival' : badgeTone === 'neutral' ? 'Sold Out' : null
+              const categoryLabel = product.component ?? product.category
+
+              return (
+                <Link
+                  key={product.id}
+                  className="group relative bg-surface-dark border border-neutral-800 hover:border-primary/50 transition-all duration-300 flex flex-col"
+                  to={`/products/${product.id}`}
+                >
+                  {badgeLabel ? (
+                    <div className="absolute top-0 left-0 z-10">
+                      <span
+                        className={`text-xs font-bold px-3 py-1 uppercase tracking-wider inline-block ${
+                          badgeTone === 'primary'
+                            ? 'bg-primary text-black'
+                            : badgeTone === 'light'
+                              ? 'bg-white text-black'
+                              : 'bg-neutral-600 text-white'
+                        }`}
+                      >
+                        {badgeLabel}
+                      </span>
+                    </div>
+                  ) : null}
+                  <div className="relative w-full pt-[100%] overflow-hidden bg-neutral-900">
+                    <img
+                      alt={product.name}
+                      className={`absolute inset-0 w-full h-full object-cover transition-all duration-500 ${
+                        product.isSoldOut
+                          ? 'opacity-50 grayscale'
+                          : 'opacity-80 group-hover:opacity-100 group-hover:scale-105 grayscale group-hover:grayscale-0 mix-blend-luminosity group-hover:mix-blend-normal'
+                      }`}
+                      data-alt={product.name}
+                      src={product.image}
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-surface-dark to-transparent opacity-60" />
+                  </div>
+                  <div className={`p-5 flex flex-col flex-1 ${product.isSoldOut ? 'opacity-60' : ''}`}>
+                    <div className="mb-1 text-xs text-neutral-500 uppercase font-mono tracking-widest">{categoryLabel}</div>
+                    <h3
+                      className={`text-white text-lg font-bold uppercase leading-tight mb-2 ${
+                        product.isSoldOut ? '' : 'group-hover:text-primary transition-colors'
+                      }`}
+                    >
+                      {product.name}
+                    </h3>
+                    <div className="mt-auto flex items-center justify-between border-t border-neutral-800 pt-4">
+                      <span
+                        className={`font-bold font-mono text-lg ${product.isSoldOut ? 'text-neutral-400 line-through' : 'text-primary'}`}
+                      >
+                        {formatPrice(product.price)}
+                      </span>
+                      {product.isSoldOut ? (
+                        <button className="text-neutral-600 cursor-not-allowed" type="button">
+                          <span className="material-symbols-outlined">block</span>
+                        </button>
+                      ) : (
+                        <button
+                          className="text-white hover:text-primary transition-colors"
+                          onClick={(event) => {
+                            event.preventDefault()
+                            event.stopPropagation()
+                            addItem(product.id)
+                          }}
+                          type="button"
+                        >
+                          <span className="material-symbols-outlined">add_circle</span>
+                        </button>
+                      )}
+                    </div>
+                  </div>
+                </Link>
+              )
+            })}
           </div>
           <div className="mt-16 flex justify-center">
-            <button className="border border-primary text-primary hover:bg-primary hover:text-black font-bold uppercase px-12 py-4 tracking-widest transition-all text-sm">
+            <button
+              className="border border-primary text-primary hover:bg-primary hover:text-black font-bold uppercase px-12 py-4 tracking-widest transition-all text-sm"
+              type="button"
+              onClick={() => setVisibleCount((prev) => Math.min(prev + 3, filteredProducts.length))}
+            >
               Load More Gear
             </button>
           </div>

@@ -1,6 +1,11 @@
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
+import { useCart } from '../data/cart'
 
 function Navbar() {
+  const { itemCount } = useCart()
+  const [menuOpen, setMenuOpen] = useState(false)
+
   return (
     <header className="sticky top-0 z-50 bg-[#1A1A1A]/90 backdrop-blur-md border-b border-white/10">
       <div className="max-w-[1400px] mx-auto px-4 md:px-8 h-16 flex items-center justify-between">
@@ -31,11 +36,52 @@ function Navbar() {
           <Link className="relative text-white hover:text-primary transition-colors group" to="/cart">
             <span className="material-symbols-outlined">shopping_cart</span>
             <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-primary text-[10px] font-bold text-black">
-              2
+              {itemCount}
             </span>
           </Link>
+          <button
+            className="md:hidden text-white hover:text-primary transition-colors"
+            onClick={() => setMenuOpen((prev) => !prev)}
+            type="button"
+          >
+            <span className="material-symbols-outlined">{menuOpen ? 'close' : 'menu'}</span>
+          </button>
         </div>
       </div>
+      {menuOpen ? (
+        <div className="md:hidden border-t border-white/10 bg-[#141414] px-4 py-4">
+          <nav className="flex flex-col gap-4">
+            <Link
+              className="text-sm font-bold uppercase tracking-wider text-gray-300 hover:text-primary transition-colors"
+              to="/products"
+              onClick={() => setMenuOpen(false)}
+            >
+              Shop
+            </Link>
+            <Link
+              className="text-sm font-bold uppercase tracking-wider text-gray-300 hover:text-primary transition-colors"
+              to="/admin"
+              onClick={() => setMenuOpen(false)}
+            >
+              Admin
+            </Link>
+            <Link
+              className="text-sm font-bold uppercase tracking-wider text-gray-300 hover:text-primary transition-colors"
+              to="/products"
+              onClick={() => setMenuOpen(false)}
+            >
+              Parts
+            </Link>
+            <Link
+              className="text-sm font-bold uppercase tracking-wider text-gray-300 hover:text-primary transition-colors"
+              to="/team"
+              onClick={() => setMenuOpen(false)}
+            >
+              Team
+            </Link>
+          </nav>
+        </div>
+      ) : null}
     </header>
   )
 }

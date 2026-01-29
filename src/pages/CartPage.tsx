@@ -1,7 +1,28 @@
+import { useMemo } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 import Footer from '../components/Footer'
 import Navbar from '../components/Navbar'
+import { useCart } from '../data/cart'
+import { formatPrice, getProductById } from '../data/products'
 
 function CartPage() {
+  const navigate = useNavigate()
+  const { items, updateQuantity, removeItem, subtotal, itemCount } = useCart()
+
+  const cartItems = useMemo(
+    () =>
+      items
+        .map((item) => {
+          const product = getProductById(item.productId)
+          if (!product) {
+            return null
+          }
+          return { product, quantity: item.quantity }
+        })
+        .filter((item): item is NonNullable<typeof item> => Boolean(item)),
+    [items],
+  )
+
   return (
     <div className="cart-theme dark bg-background-light dark:bg-background-dark font-display overflow-hidden h-screen w-screen selection:bg-primary selection:text-black">
       <Navbar />
@@ -22,7 +43,11 @@ function CartPage() {
               <br />
               Die Last.
             </h1>
-            <button className="mt-8 bg-white text-black px-8 py-3 font-bold uppercase tracking-widest text-sm hover:bg-primary transition-colors">
+            <button
+              className="mt-8 bg-white text-black px-8 py-3 font-bold uppercase tracking-widest text-sm hover:bg-primary transition-colors"
+              onClick={() => navigate('/products')}
+              type="button"
+            >
               Shop Frames
             </button>
           </div>
@@ -33,10 +58,14 @@ function CartPage() {
         <header className="flex items-center justify-between px-6 py-5 border-b border-drawer-border shrink-0">
           <div className="flex items-center gap-3">
             <h2 className="text-white text-xl font-bold leading-tight tracking-tight uppercase">
-              Your Cart <span className="text-primary">(3)</span>
+              Your Cart <span className="text-primary">({itemCount})</span>
             </h2>
           </div>
-          <button className="group flex items-center justify-center text-gray-400 hover:text-primary transition-colors cursor-pointer p-2 -mr-2">
+          <button
+            className="group flex items-center justify-center text-gray-400 hover:text-primary transition-colors cursor-pointer p-2 -mr-2"
+            onClick={() => navigate('/products')}
+            type="button"
+          >
             <span className="text-sm font-bold mr-2 uppercase tracking-wider hidden sm:block group-hover:text-white">
               Close
             </span>
@@ -44,147 +73,90 @@ function CartPage() {
           </button>
         </header>
         <div className="flex-1 overflow-y-auto drawer-scroll p-6 space-y-6">
-          <div className="group flex gap-4 w-full">
-            <div className="shrink-0 relative">
-              <div
-                className="bg-center bg-no-repeat bg-cover rounded-sm size-[100px] bg-white/5 border border-white/10"
-                data-alt="Carbon fiber bicycle fork on dark background"
-                style={{
-                  backgroundImage:
-                    'url("https://lh3.googleusercontent.com/aida-public/AB6AXuDjD9VqD1BRPvG5VTlUhc83NKSi-nQqgVPdJnYmZBUQJ_PykMppDiHxYEqIAhyjuVjCN1rnNSJyV45XagwSptTjiW1_m5_lxUzJeFqGt1wYCpbBp0dLO3bPtoqAtduPHqUTplLKtImvDhneTUmSeS6UHIvTKJ9u7cZk1ixX03Wgi1Tz3sVq4anXwzYOOZsjo9CjhXyeJXiBgh4TGa5VrUq0ETrbCrbWLsIYncZrTocNlHA4OibW-Lo5soiZJDkhPgSbUDo57IEjoQ")',
-                }}
-              ></div>
-            </div>
-            <div className="flex flex-1 flex-col justify-between py-1">
-              <div>
-                <div className="flex justify-between items-start gap-2">
-                  <p className="text-white text-lg font-bold leading-tight uppercase tracking-tight hover:text-primary cursor-pointer transition-colors">
-                    Aggro Carbon Race Fork
-                  </p>
-                  <p className="text-white text-lg font-bold leading-tight">$299.00</p>
+          {cartItems.map((item, index) => (
+            <div key={item.product.id}>
+              <div className="group flex gap-4 w-full">
+                <div className="shrink-0 relative">
+                  <div
+                    className="bg-center bg-no-repeat bg-cover rounded-sm size-[100px] bg-white/5 border border-white/10"
+                    data-alt={item.product.name}
+                    style={{
+                      backgroundImage: `url("${item.product.image}")`,
+                    }}
+                  ></div>
                 </div>
-                <p className="text-gray-400 text-sm font-medium mt-1">Size: Pro XL | Color: Matte Black</p>
-              </div>
-              <div className="flex items-center justify-between mt-3">
-                <div className="flex items-center bg-[#2a2a2a] rounded-sm border border-[#333]">
-                  <button className="text-white w-8 h-8 flex items-center justify-center hover:bg-[#333] active:text-primary transition-colors text-lg font-medium leading-none pb-1">
-                    -
-                  </button>
-                  <input
-                    className="w-8 h-8 p-0 text-center bg-transparent text-white text-sm font-bold border-none focus:ring-0 appearance-none"
-                    readOnly
-                    type="number"
-                    defaultValue="1"
-                  />
-                  <button className="text-white w-8 h-8 flex items-center justify-center hover:bg-[#333] active:text-primary transition-colors text-lg font-medium leading-none pb-1">
-                    +
-                  </button>
+                <div className="flex flex-1 flex-col justify-between py-1">
+                  <div>
+                    <div className="flex justify-between items-start gap-2">
+                      <Link
+                        className="text-white text-lg font-bold leading-tight uppercase tracking-tight hover:text-primary cursor-pointer transition-colors"
+                        to={`/products/${item.product.id}`}
+                      >
+                        {item.product.name}
+                      </Link>
+                      <p className="text-white text-lg font-bold leading-tight">{formatPrice(item.product.price)}</p>
+                    </div>
+                    <p className="text-gray-400 text-sm font-medium mt-1">
+                      Team: {item.product.team ?? 'Factory'} | Category: {item.product.category}
+                    </p>
+                  </div>
+                  <div className="flex items-center justify-between mt-3">
+                    <div className="flex items-center bg-[#2a2a2a] rounded-sm border border-[#333]">
+                      <button
+                        className="text-white w-8 h-8 flex items-center justify-center hover:bg-[#333] active:text-primary transition-colors text-lg font-medium leading-none pb-1"
+                        onClick={() =>
+                          item.quantity > 1
+                            ? updateQuantity(item.product.id, item.quantity - 1)
+                            : removeItem(item.product.id)
+                        }
+                        type="button"
+                      >
+                        -
+                      </button>
+                      <input
+                        className="w-8 h-8 p-0 text-center bg-transparent text-white text-sm font-bold border-none focus:ring-0 appearance-none"
+                        readOnly
+                        type="number"
+                        value={item.quantity}
+                      />
+                      <button
+                        className="text-white w-8 h-8 flex items-center justify-center hover:bg-[#333] active:text-primary transition-colors text-lg font-medium leading-none pb-1"
+                        onClick={() => updateQuantity(item.product.id, item.quantity + 1)}
+                        type="button"
+                      >
+                        +
+                      </button>
+                    </div>
+                    <button
+                      className="text-xs font-bold text-gray-500 uppercase tracking-wider hover:text-red-500 hover:underline underline-offset-4 transition-colors"
+                      onClick={() => removeItem(item.product.id)}
+                      type="button"
+                    >
+                      Remove
+                    </button>
+                  </div>
                 </div>
-                <button className="text-xs font-bold text-gray-500 uppercase tracking-wider hover:text-red-500 hover:underline underline-offset-4 transition-colors">
-                  Remove
-                </button>
               </div>
+              {index < cartItems.length - 1 ? <div className="h-px bg-drawer-border w-full mt-6"></div> : null}
             </div>
-          </div>
-          <div className="h-px bg-drawer-border w-full"></div>
-          <div className="group flex gap-4 w-full">
-            <div className="shrink-0 relative">
-              <div
-                className="bg-center bg-no-repeat bg-cover rounded-sm size-[100px] bg-white/5 border border-white/10"
-                data-alt="Chrome bicycle handlebars isolated"
-                style={{
-                  backgroundImage:
-                    'url("https://lh3.googleusercontent.com/aida-public/AB6AXuC3PNL7RyacOTSclYqDgPB9moPdRiprTKpwA2RvTmE6B_mtiXkebpj_L00JjnQ0X66_IN442L5uFVF1-yYEMzbbTwVU7Cr11KgwNjvRZd3FpEs88RvSAFPZTAjGJoavxtDUXgf55jwsJ7OzwE-RHBvl4qTKAMKbLqHwBePZsKdK3nHAIhHblrWHjKoCXxrsN6yxMCHhMcKq_XqN_ylOBTczIOBd3CNM3TTzH1FNZrHqoZsYi0z9RYA32rkN7sIQWXpNYIA-fB9jvA")',
-                }}
-              ></div>
-            </div>
-            <div className="flex flex-1 flex-col justify-between py-1">
-              <div>
-                <div className="flex justify-between items-start gap-2">
-                  <p className="text-white text-lg font-bold leading-tight uppercase tracking-tight hover:text-primary cursor-pointer transition-colors">
-                    Pro Taper Bars - 8.5&quot; Rise
-                  </p>
-                  <p className="text-white text-lg font-bold leading-tight">$65.00</p>
-                </div>
-                <p className="text-gray-400 text-sm font-medium mt-1">Color: Chrome</p>
-              </div>
-              <div className="flex items-center justify-between mt-3">
-                <div className="flex items-center bg-[#2a2a2a] rounded-sm border border-[#333]">
-                  <button className="text-white w-8 h-8 flex items-center justify-center hover:bg-[#333] active:text-primary transition-colors text-lg font-medium leading-none pb-1">
-                    -
-                  </button>
-                  <input
-                    className="w-8 h-8 p-0 text-center bg-transparent text-white text-sm font-bold border-none focus:ring-0 appearance-none"
-                    readOnly
-                    type="number"
-                    defaultValue="1"
-                  />
-                  <button className="text-white w-8 h-8 flex items-center justify-center hover:bg-[#333] active:text-primary transition-colors text-lg font-medium leading-none pb-1">
-                    +
-                  </button>
-                </div>
-                <button className="text-xs font-bold text-gray-500 uppercase tracking-wider hover:text-red-500 hover:underline underline-offset-4 transition-colors">
-                  Remove
-                </button>
-              </div>
-            </div>
-          </div>
-          <div className="h-px bg-drawer-border w-full"></div>
-          <div className="group flex gap-4 w-full">
-            <div className="shrink-0 relative">
-              <div
-                className="bg-center bg-no-repeat bg-cover rounded-sm size-[100px] bg-white/5 border border-white/10"
-                data-alt="Bicycle grips in neon yellow packaging"
-                style={{
-                  backgroundImage:
-                    'url("https://lh3.googleusercontent.com/aida-public/AB6AXuCojtLX7x4AlX8nQ6Qdsf6a9cOMdD-vA6CLvyu0HH4GQO4MsL8cCkO60mRlICRHMab6dLEvaQ4MK8rC2vQtTD10GBMqS-Mr2lfG_AWtPhp1QYBjsWqkJF0VTzf_n8d258jaC62lGe1n6AwEqY5FFWVkzIsM9ASC9XsLLPHxUb8t-lCXx72ZZUrR29w2pv-QoyKuPcPW40pFTyJzstAgnLFUBhGIfvpIAtb3ettPFjrB6hUZjr9s3BOJ0oOUMSRUqFrYpRec_oE66A")',
-                }}
-              ></div>
-            </div>
-            <div className="flex flex-1 flex-col justify-between py-1">
-              <div>
-                <div className="flex justify-between items-start gap-2">
-                  <p className="text-white text-lg font-bold leading-tight uppercase tracking-tight hover:text-primary cursor-pointer transition-colors">
-                    ODI Longneck Grips
-                  </p>
-                  <p className="text-white text-lg font-bold leading-tight">$14.95</p>
-                </div>
-                <p className="text-gray-400 text-sm font-medium mt-1">Color: Neon Yellow</p>
-              </div>
-              <div className="flex items-center justify-between mt-3">
-                <div className="flex items-center bg-[#2a2a2a] rounded-sm border border-[#333]">
-                  <button className="text-white w-8 h-8 flex items-center justify-center hover:bg-[#333] active:text-primary transition-colors text-lg font-medium leading-none pb-1">
-                    -
-                  </button>
-                  <input
-                    className="w-8 h-8 p-0 text-center bg-transparent text-white text-sm font-bold border-none focus:ring-0 appearance-none"
-                    readOnly
-                    type="number"
-                    defaultValue="2"
-                  />
-                  <button className="text-white w-8 h-8 flex items-center justify-center hover:bg-[#333] active:text-primary transition-colors text-lg font-medium leading-none pb-1">
-                    +
-                  </button>
-                </div>
-                <button className="text-xs font-bold text-gray-500 uppercase tracking-wider hover:text-red-500 hover:underline underline-offset-4 transition-colors">
-                  Remove
-                </button>
-              </div>
-            </div>
-          </div>
+          ))}
         </div>
         <footer className="bg-[#151515] p-6 border-t border-drawer-border shrink-0 z-10 shadow-[0_-5px_20px_rgba(0,0,0,0.5)]">
           <div className="space-y-4 mb-6">
             <div className="flex justify-between items-center">
               <p className="text-gray-400 text-base font-medium">Subtotal</p>
-              <p className="text-white text-2xl font-bold tracking-tight">$378.95</p>
+              <p className="text-white text-2xl font-bold tracking-tight">{formatPrice(subtotal)}</p>
             </div>
             <div className="flex items-center justify-center gap-2 text-[#666] text-xs uppercase tracking-widest font-bold">
               <span className="material-symbols-outlined text-base">local_shipping</span>
               <span>Shipping calculated at checkout</span>
             </div>
           </div>
-          <button className="group relative w-full h-14 bg-primary text-black font-bold text-lg uppercase tracking-wider rounded-sm overflow-hidden flex items-center justify-center transition-all hover:bg-white hover:shadow-[0_0_20px_rgba(249,249,6,0.4)]">
+          <button
+            className="group relative w-full h-14 bg-primary text-black font-bold text-lg uppercase tracking-wider rounded-sm overflow-hidden flex items-center justify-center transition-all hover:bg-white hover:shadow-[0_0_20px_rgba(249,249,6,0.4)]"
+            onClick={() => navigate('/signin')}
+            type="button"
+          >
             <span className="relative z-10 flex items-center gap-2">
               Proceed to Checkout
               <span className="material-symbols-outlined transition-transform duration-300 group-hover:translate-x-1">
@@ -194,7 +166,11 @@ function CartPage() {
             <div className="absolute inset-0 bg-white translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-500 skew-x-12 opacity-30"></div>
           </button>
           <div className="mt-4 text-center">
-            <button className="text-gray-500 text-xs font-bold uppercase tracking-widest hover:text-white transition-colors underline underline-offset-4">
+            <button
+              className="text-gray-500 text-xs font-bold uppercase tracking-widest hover:text-white transition-colors underline underline-offset-4"
+              onClick={() => navigate('/products')}
+              type="button"
+            >
               Continue Shopping
             </button>
           </div>

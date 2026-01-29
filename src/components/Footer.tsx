@@ -19,19 +19,25 @@ function Footer() {
             <div className="flex gap-4">
               <a
                 className="w-10 h-10 rounded bg-[#222] flex items-center justify-center text-white hover:bg-primary hover:text-black transition-colors"
-                href="#"
+                href="https://www.instagram.com/"
+                rel="noreferrer"
+                target="_blank"
               >
                 <span className="text-xs font-bold">IG</span>
               </a>
               <a
                 className="w-10 h-10 rounded bg-[#222] flex items-center justify-center text-white hover:bg-primary hover:text-black transition-colors"
-                href="#"
+                href="https://www.youtube.com/"
+                rel="noreferrer"
+                target="_blank"
               >
                 <span className="text-xs font-bold">YT</span>
               </a>
               <a
                 className="w-10 h-10 rounded bg-[#222] flex items-center justify-center text-white hover:bg-primary hover:text-black transition-colors"
-                href="#"
+                href="https://www.tiktok.com/"
+                rel="noreferrer"
+                target="_blank"
               >
                 <span className="text-xs font-bold">TT</span>
               </a>
@@ -46,7 +52,7 @@ function Footer() {
                 </Link>
               </li>
               <li>
-                <Link className="hover:text-primary transition-colors" to="/products/zeronine">
+                <Link className="hover:text-primary transition-colors" to="/products/zeronine-frame">
                   Frames
                 </Link>
               </li>
@@ -66,24 +72,24 @@ function Footer() {
             <h4 className="text-white font-bold uppercase tracking-wider mb-6">Support</h4>
             <ul className="flex flex-col gap-3 text-gray-500 text-sm font-medium">
               <li>
-                <a className="hover:text-primary transition-colors" href="#">
+                <Link className="hover:text-primary transition-colors" to="/products">
                   Shipping &amp; Returns
-                </a>
+                </Link>
               </li>
               <li>
-                <a className="hover:text-primary transition-colors" href="#">
+                <Link className="hover:text-primary transition-colors" to="/products">
                   Warranty
-                </a>
+                </Link>
               </li>
               <li>
-                <a className="hover:text-primary transition-colors" href="#">
+                <Link className="hover:text-primary transition-colors" to="/products">
                   Contact Us
-                </a>
+                </Link>
               </li>
               <li>
-                <a className="hover:text-primary transition-colors" href="#">
+                <Link className="hover:text-primary transition-colors" to="/products">
                   FAQ
-                </a>
+                </Link>
               </li>
             </ul>
           </div>
@@ -91,12 +97,12 @@ function Footer() {
         <div className="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-gray-600 font-mono uppercase">
           <p>© 2023 Aggro Bikes Inc. All rights reserved.</p>
           <div className="flex gap-6">
-            <a className="hover:text-gray-400" href="#">
+            <Link className="hover:text-gray-400" to="/products">
               Privacy Policy
-            </a>
-            <a className="hover:text-gray-400" href="#">
+            </Link>
+            <Link className="hover:text-gray-400" to="/products">
               Terms of Service
-            </a>
+            </Link>
           </div>
         </div>
       </div>

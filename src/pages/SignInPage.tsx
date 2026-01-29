@@ -1,8 +1,21 @@
-import { Link } from 'react-router-dom'
+import { useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 import Footer from '../components/Footer'
 import Navbar from '../components/Navbar'
 
 function SignInPage() {
+  const navigate = useNavigate()
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
+    if (!email.trim() || !password.trim()) {
+      return
+    }
+    navigate('/products')
+  }
+
   return (
     <div className="signin-theme dark bg-background-dark font-display min-h-screen flex flex-col overflow-x-hidden selection:bg-primary selection:text-black">
       <Navbar />
@@ -20,7 +33,7 @@ function SignInPage() {
             <p className="text-neutral-400 text-sm font-medium tracking-wide uppercase">Industrial Performance Parts</p>
           </div>
           <div className="bg-dark-surface border border-[#333333] p-8 md:p-10 rounded-xl shadow-2xl backdrop-blur-md">
-            <form action="#" className="flex flex-col gap-6" method="POST">
+            <form action="#" className="flex flex-col gap-6" method="POST" onSubmit={handleSubmit}>
               <div className="space-y-2">
                 <label className="text-white text-xs font-bold tracking-widest uppercase ml-1" htmlFor="email">
                   Rider Email
@@ -35,6 +48,9 @@ function SignInPage() {
                     name="email"
                     placeholder="ENTER YOUR EMAIL"
                     type="email"
+                    required
+                    value={email}
+                    onChange={(event) => setEmail(event.target.value)}
                   />
                 </div>
               </div>
@@ -43,9 +59,9 @@ function SignInPage() {
                   <label className="text-white text-xs font-bold tracking-widest uppercase" htmlFor="password">
                     Password
                   </label>
-                  <a className="text-neutral-400 hover:text-white text-xs transition-colors" href="#">
+                  <Link className="text-neutral-400 hover:text-white text-xs transition-colors" to="/signup">
                     Forgot Password?
-                  </a>
+                  </Link>
                 </div>
                 <div className="relative group">
                   <span className="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-black/60 z-10">
@@ -57,12 +73,16 @@ function SignInPage() {
                     name="password"
                     placeholder="ENTER PASSWORD"
                     type="password"
+                    minLength={6}
+                    required
+                    value={password}
+                    onChange={(event) => setPassword(event.target.value)}
                   />
                 </div>
               </div>
               <button
                 className="mt-4 w-full h-14 bg-primary hover:bg-[#dcdc05] text-black text-lg font-black tracking-wider uppercase rounded-lg shadow-[0_0_20px_rgba(249,249,6,0.2)] hover:shadow-[0_0_30px_rgba(249,249,6,0.4)] transition-all duration-300 transform hover:-translate-y-1 active:scale-95 flex items-center justify-center gap-2 group"
-                type="button"
+                type="submit"
               >
                 <span>Sign In</span>
                 <span className="material-symbols-outlined font-bold group-hover:translate-x-1 transition-transform">
@@ -81,13 +101,21 @@ function SignInPage() {
               </div>
             </div>
             <div className="grid grid-cols-2 gap-4">
-              <button className="flex items-center justify-center gap-2 bg-[#2a2a2a] hover:bg-[#333] text-white py-3 rounded-lg border border-[#444] transition-colors">
+              <button
+                className="flex items-center justify-center gap-2 bg-[#2a2a2a] hover:bg-[#333] text-white py-3 rounded-lg border border-[#444] transition-colors"
+                onClick={() => navigate('/products')}
+                type="button"
+              >
                 <svg aria-hidden="true" className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
                   <path d="M12.0003 20.45c-4.6617 0-8.4375-3.7766-8.4375-8.4375 0-4.6617 3.7758-8.4375 8.4375-8.4375 4.6608 0 8.4375 3.7758 8.4375 8.4375 0 4.6609-3.7767 8.4375-8.4375 8.4375zm0-18.5625C6.4173 1.8875 1.8878 6.4178 1.8878 12.0125c0 5.5947 4.5295 10.125 10.1125 10.125 5.5822 0 10.1125-4.5303 10.1125-10.125 0-5.5947-4.5303-10.125-10.1125-10.125zM12.75 16.5v-3h3v-2.25h-3v-2.25h-2.25v2.25h-2.25v2.25h2.25v3h2.25z"></path>
                 </svg>
                 <span className="text-xs font-bold tracking-wide">GOOGLE</span>
               </button>
-              <button className="flex items-center justify-center gap-2 bg-[#2a2a2a] hover:bg-[#333] text-white py-3 rounded-lg border border-[#444] transition-colors">
+              <button
+                className="flex items-center justify-center gap-2 bg-[#2a2a2a] hover:bg-[#333] text-white py-3 rounded-lg border border-[#444] transition-colors"
+                onClick={() => navigate('/products')}
+                type="button"
+              >
                 <svg aria-hidden="true" className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
                   <path d="M13.2 12.0125l-1.2-1.2 3.6-3.6h-7.2v-1.2h9.6v9.6h-1.2v-7.2l-3.6 3.6z"></path>
                   <path d="M0 0h24v24H0V0z" fill="none"></path>

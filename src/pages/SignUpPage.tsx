@@ -1,8 +1,24 @@
-import { Link } from 'react-router-dom'
+import { useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 import Footer from '../components/Footer'
 import Navbar from '../components/Navbar'
 
 function SignUpPage() {
+  const navigate = useNavigate()
+  const [fullName, setFullName] = useState('')
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [newsletterOptIn, setNewsletterOptIn] = useState(true)
+  const [passwordVisible, setPasswordVisible] = useState(false)
+
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
+    if (!fullName.trim() || !email.trim() || !password.trim()) {
+      return
+    }
+    navigate('/products')
+  }
+
   return (
     <div className="signup-theme bg-black text-white font-display antialiased selection:bg-primary selection:text-black overflow-x-hidden">
       <div className="relative flex min-h-screen w-full flex-col">
@@ -29,13 +45,16 @@ function SignUpPage() {
                     Create your account to track orders and get exclusive gear drops.
                   </p>
                 </div>
-                <form className="flex flex-col gap-5">
+                <form className="flex flex-col gap-5" onSubmit={handleSubmit}>
                   <label className="flex flex-col flex-1">
                     <p className="text-white text-xs font-bold uppercase tracking-wider mb-2">Full Name</p>
                     <input
                       className="form-input flex w-full min-w-0 flex-1 resize-none rounded-lg text-black focus:outline-0 focus:ring-2 focus:ring-primary border-none bg-white h-12 placeholder:text-gray-500 px-4 text-base font-medium leading-normal shadow-lg"
                       placeholder="Enter your name"
                       type="text"
+                      required
+                      value={fullName}
+                      onChange={(event) => setFullName(event.target.value)}
                     />
                   </label>
                   <label className="flex flex-col flex-1">
@@ -44,6 +63,9 @@ function SignUpPage() {
                       className="form-input flex w-full min-w-0 flex-1 resize-none rounded-lg text-black focus:outline-0 focus:ring-2 focus:ring-primary border-none bg-white h-12 placeholder:text-gray-500 px-4 text-base font-medium leading-normal shadow-lg"
                       placeholder="rider@example.com"
                       type="email"
+                      required
+                      value={email}
+                      onChange={(event) => setEmail(event.target.value)}
                     />
                   </label>
                   <label className="flex flex-col flex-1">
@@ -52,18 +74,31 @@ function SignUpPage() {
                       <input
                         className="form-input flex w-full min-w-0 flex-1 resize-none rounded-lg text-black focus:outline-0 focus:ring-2 focus:ring-primary border-none bg-white h-12 placeholder:text-gray-500 px-4 pr-12 text-base font-medium leading-normal"
                         placeholder="Create a password"
-                        type="password"
+                        type={passwordVisible ? 'text' : 'password'}
+                        minLength={6}
+                        required
+                        value={password}
+                        onChange={(event) => setPassword(event.target.value)}
                       />
-                      <div className="absolute right-0 top-0 h-full flex items-center pr-4 text-gray-500 cursor-pointer hover:text-black">
+                      <button
+                        className="absolute right-0 top-0 h-full flex items-center pr-4 text-gray-500 cursor-pointer hover:text-black"
+                        type="button"
+                        onClick={() => setPasswordVisible((prev) => !prev)}
+                      >
                         <span className="material-symbols-outlined" style={{ fontSize: '20px' }}>
                           visibility
                         </span>
-                      </div>
+                      </button>
                     </div>
                   </label>
                   <label className="flex items-start gap-3 cursor-pointer group mt-2">
                     <div className="relative flex items-center">
-                      <input defaultChecked className="peer sr-only" type="checkbox" />
+                      <input
+                        className="peer sr-only"
+                        type="checkbox"
+                        checked={newsletterOptIn}
+                        onChange={(event) => setNewsletterOptIn(event.target.checked)}
+                      />
                       <div className="h-5 w-5 rounded border border-white/40 bg-transparent transition-all peer-checked:bg-primary peer-checked:border-primary peer-checked:text-black flex items-center justify-center group-hover:border-primary">
                         <span className="material-symbols-outlined opacity-0 peer-checked:opacity-100 font-bold" style={{ fontSize: '16px' }}>
                           check
@@ -74,7 +109,10 @@ function SignUpPage() {
                       Join the newsletter for <span className="text-primary font-bold">drop alerts</span>
                     </span>
                   </label>
-                  <button className="mt-4 flex w-full cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-4 bg-primary text-black hover:bg-[#ffff33] active:scale-[0.98] transition-all duration-200">
+                  <button
+                    className="mt-4 flex w-full cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-4 bg-primary text-black hover:bg-[#ffff33] active:scale-[0.98] transition-all duration-200"
+                    type="submit"
+                  >
                     <span className="text-base font-black uppercase tracking-wider">Create Account</span>
                   </button>
                 </form>
