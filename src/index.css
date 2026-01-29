@@ -1,0 +1,179 @@
+@import "tailwindcss";
+
+@theme {
+  --color-primary: #f9f906;
+  --color-background-light: #f8f8f5;
+  --color-background-dark: #1A1A1A;
+  --color-surface-dark: #222222;
+  --color-border-dark: #4a4a21;
+  --color-dark-surface: #121212;
+  --color-drawer-bg: #1A1A1A;
+  --color-drawer-border: #333333;
+  --font-display: "Space Grotesk", sans-serif;
+  --font-body: "Noto Sans", sans-serif;
+  --radius: 0.125rem;
+  --radius-lg: 0.25rem;
+  --radius-xl: 0.5rem;
+  --radius-full: 9999px;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #1a1a1a;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #444;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #f9f906;
+}
+
+.bg-grit {
+  background-color: #1A1A1A;
+  background-image: url(https://lh3.googleusercontent.com/aida-public/AB6AXuBiPtxAagn53fVoQJb-y_eYyDQyag0f9bfeV-VST4RFMWraUcC_sdtvowIwNL2XE_thA3N-xtOJSPE84MwLVt60X60a7563ma0-kZVDCrFoeZqtaIrWdpc12a0-Qru5B8gKu5T1pAmenmV_RMA-GRB_XiM085wnTBF5R8WmixJpBsctOnzzSK5m02Z_mLeB6KQwAV1LT20nEgbLBB9kFfgLaZGPQpHpPitqy2kBk9RtGh-zbSbU2yWjKTJBf2lL2Z8t3fH144CAcw);
+}
+
+.bg-hazard {
+  background: repeating-linear-gradient(45deg, #333, #333 10px, #1A1A1A 10px, #1A1A1A 20px);
+}
+
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.product-details-theme {
+  --color-background-dark: #23230f;
+  --color-surface-dark: #2d2d14;
+  --color-border-dark: #4a4a21;
+}
+
+.product-details-theme ::-webkit-scrollbar-track {
+  background: #23230f;
+}
+
+.product-details-theme ::-webkit-scrollbar-thumb {
+  background: #4a4a21;
+}
+
+.product-details-theme ::-webkit-scrollbar-thumb:hover {
+  background: #f9f906;
+}
+
+.product-details-theme details > summary {
+  list-style: none;
+}
+
+.product-details-theme details > summary::-webkit-details-marker {
+  display: none;
+}
+
+.cart-theme {
+  --color-background-dark: #23230f;
+  --color-drawer-bg: #1A1A1A;
+  --color-drawer-border: #333333;
+}
+
+.cart-theme .drawer-scroll::-webkit-scrollbar {
+  width: 6px;
+}
+
+.cart-theme .drawer-scroll::-webkit-scrollbar-track {
+  background: #1A1A1A;
+}
+
+.cart-theme .drawer-scroll::-webkit-scrollbar-thumb {
+  background: #333;
+  border-radius: 3px;
+}
+
+.cart-theme .drawer-scroll::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+.signin-theme {
+  --color-background-dark: #000000;
+  --color-dark-surface: #121212;
+}
+
+.signin-theme ::-webkit-scrollbar-track {
+  background: #000;
+}
+
+.signin-theme ::-webkit-scrollbar-thumb {
+  background: #333;
+  border-radius: 4px;
+}
+
+.signin-theme ::-webkit-scrollbar-thumb:hover {
+  background: #f9f906;
+}
+
+.signin-theme .bg-metal-texture {
+  background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23333' fill-opacity='0.15'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+}
+
+.signup-theme {
+  --font-display: "Lexend", "Noto Sans", sans-serif;
+  --color-background-dark: #23230f;
+}
+
+.signup-theme ::-webkit-scrollbar-track {
+  background: #111;
+}
+
+.signup-theme ::-webkit-scrollbar-thumb {
+  background: #333;
+  border-radius: 4px;
+}
+
+.signup-theme ::-webkit-scrollbar-thumb:hover {
+  background: #f9f906;
+}
+
+.industrial-shadow {
+  box-shadow: 0 0 40px rgba(0, 0, 0, 0.8);
+}
+
+.admin-theme {
+  --font-display: "Inter", sans-serif;
+  --color-background-dark: #1a1a1a;
+  --color-asphalt-gray: #1a1a1a;
+  --color-industrial-gray: #2a2a2a;
+  --color-border-gray: #333333;
+}
+
+.admin-theme .material-symbols-outlined {
+  font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24;
+}
+
+.admin-theme .zebra-table tr:nth-child(even) {
+  background-color: #242424;
+}
+
+.admin-theme .zebra-table tr:hover {
+  box-shadow: inset 0 0 0 1px #f9f906;
+  cursor: pointer;
+}
+
+.admin-theme .industrial-input {
+  background-color: #fff !important;
+  color: #000 !important;
+  font-weight: 700;
+}
+
+.admin-theme .industrial-input::placeholder {
+  color: #888;
+}
+
+.admin-theme .dashed-neon-border {
+  background-image: url(https://lh3.googleusercontent.com/aida-public/AB6AXuA19vTS5gkwrla9PvLyEyZZQcqtawTgX2dSn_oSwHYJYYQiyWZb5Yf6PQtlopMJpt_iRuht0B7nSAOhimuJulQhYyu6EefCJD7KYJWPL5u9hKalX3G8bI8mOZcblkeFj_j3kms4q7LoCYqQ5PvJKEkvEW_cF9yOR1m89HTM5ni36hUrda5QGWynf2n0JsSVf4ML5_hdtdkh3sIhP79U2edV0NDPJL8Gfxpy0uL2k4vgFafdTzwsDeV5x_hfpBIAWzvV5nlgSqUlWA);
+  border-radius: 0.5rem;
+}
