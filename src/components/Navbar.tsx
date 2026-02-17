@@ -111,8 +111,10 @@ function Navbar({ mode = 'solid' }: NavbarProps) {
         <div className={`max-w-[1500px] mx-auto px-6 lg:px-10 ${innerClassName}`}>
           <div className="flex items-center justify-between gap-4 sm:gap-8">
             <Link className="leading-none shrink-0" to="/">
-              <div className="text-[18px] sm:text-[28px] tracking-[0.14em] sm:tracking-[0.16em] text-white whitespace-nowrap">
-                CURTIS QUOW
+              <div className="text-white tracking-[0.14em] sm:tracking-[0.16em] leading-none">
+                <div className="text-[16px] sm:hidden">ALESSA</div>
+                <div className="mt-1 text-[16px] sm:hidden">AICHINGER</div>
+                <div className="hidden sm:block text-[28px]">ALESSA AICHINGER</div>
               </div>
               <div className="hidden sm:block mt-2 text-[9px] tracking-[0.34em] uppercase text-white/70 font-[var(--font-body)]">
                 Redefining the Art of Real Estate
@@ -197,7 +199,7 @@ function Navbar({ mode = 'solid' }: NavbarProps) {
                   { label: 'EVENTS', href: '#events' },
                   { label: 'NYREM', href: '#nyrem', chevron: true },
                   { label: 'CLA FOUNDATION', href: '#cla' },
-                  { label: 'ABOUT CURTIS', href: '#about' },
+                  { label: 'ABOUT ALESSA', href: '#about' },
                   { label: 'CONTACT', href: '#connect' },
                 ].map((item) => (
                   <a
@@ -218,7 +220,7 @@ function Navbar({ mode = 'solid' }: NavbarProps) {
             </nav>
 
             <div className="mt-10 px-8">
-              <div className="text-center text-[22px] tracking-[0.14em] text-[#9cb0c3]">CURTIS QUOW</div>
+              <div className="text-center text-[18px] tracking-[0.14em] text-[#9cb0c3]">ALESSA AICHINGER</div>
             </div>
           </div>
         </div>

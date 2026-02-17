@@ -289,7 +289,7 @@ function LandingPage() {
             <div className="relative min-h-[520px] lg:min-h-[640px]">
               <div
                 className="absolute inset-0 bg-cover bg-center"
-                data-alt="Curtis seated in a bright, modern interior"
+                data-alt="Alessa seated in a bright, modern interior"
                 style={{ backgroundImage: `url('${aboutLeftImageUrl}')` }}
               />
               <div className="absolute inset-0 bg-gradient-to-r from-black/15 via-transparent to-transparent lg:from-black/25" />
@@ -308,17 +308,17 @@ function LandingPage() {
                   About Us
                 </div>
                 <h2 className="mt-4 text-[44px] sm:text-[52px] leading-[0.95] tracking-wide">
-                  MEET CURTIS
+                  MEET ALESSA
                 </h2>
                 <p className="mt-6 text-[13px] leading-6 text-[#3a3a3a] font-[var(--font-body)] max-w-[420px]">
-                  Discover the difference with Curtis Quow, a Brooklyn native and seasoned real estate expert dedicated to
-                  navigating the complexities of buying, selling, and renting in New York&apos;s dynamic property market.
+                  Discover the difference with Alessa Aichinger, a Brooklyn native and seasoned real estate expert dedicated
+                  to navigating the complexities of buying, selling, and renting in New York&apos;s dynamic property market.
                 </p>
 
                 <div className="mt-12">
                   <div
                     className="w-full max-w-[520px] aspect-[16/9] bg-cover bg-center shadow-[0_24px_55px_rgba(0,0,0,0.25)]"
-                    data-alt="Curtis with clients by the pool"
+                    data-alt="Alessa with clients by the pool"
                     style={{ backgroundImage: `url('${aboutInlineImageUrl}')` }}
                   />
                 </div>
@@ -329,8 +329,8 @@ function LandingPage() {
               <div className="w-full max-w-[420px] lg:pt-20">
                 <p className="text-[13px] leading-6 text-[#3a3a3a] font-[var(--font-body)]">
                   With over nine years of experience, a strong financial background, and a commitment to transparency and
-                  client interests, Curtis is your go-to guide for everything from first-time home buying to luxury
-                  rentals. Connect with Curtis for unmatched expertise and a truly personalized real estate journey.
+                  client interests, Alessa is your go-to guide for everything from first-time home buying to luxury rentals.
+                  Connect with Alessa for unmatched expertise and a truly personalized real estate journey.
                 </p>
                 <div className="mt-10">
                   <a
@@ -453,7 +453,7 @@ function LandingPage() {
                   <div className="absolute inset-y-0 left-0 w-[38%] bg-gradient-to-r from-[#f6f6f4] via-[#f6f6f4]/70 to-transparent" />
                   <div
                     className="absolute inset-0 bg-cover bg-center"
-                    data-alt="Curtis in a modern interior"
+                    data-alt="Alessa in a modern interior"
                     style={{ backgroundImage: `url('${servicesImageUrl}')` }}
                   />
                 </div>
@@ -603,21 +603,21 @@ function LandingPage() {
                         </div>
                       </div>
 
-                      <div className="hidden lg:block pointer-events-none absolute left-[10%] bottom-[-28px] text-[150px] tracking-[0.2em] text-white/[0.06] leading-none">
-                        QUOW
+                      <div className="hidden lg:block pointer-events-none absolute left-[6%] bottom-[-28px] text-[96px] tracking-[0.16em] text-white/[0.06] leading-none">
+                        AICHINGER
                       </div>
                     </div>
 
                     <div className="relative mt-12 lg:mt-0 overflow-hidden bg-[#0c2b43]">
                       <div
                         className="absolute inset-0 bg-cover bg-center"
-                        data-alt="Curtis holding book"
+                        data-alt="Alessa holding book"
                         style={{ backgroundImage: `url('${connectedPortraitUrl}')` }}
                       />
                       <div className="absolute inset-0 bg-gradient-to-r from-[#0c2b43]/15 via-transparent to-[#0c2b43]/10" />
                       <div className="absolute inset-y-0 right-0 w-[58%] bg-white" />
                       <div className="absolute top-10 right-12 text-[10px] tracking-[0.34em] uppercase text-black/60 font-[var(--font-body)]">
-                        CURTIS QUOW
+                        ALESSA AICHINGER
                       </div>
                       <div className="absolute right-0 left-[42%] top-1/2 -translate-y-1/2 px-10">
                         <div className="relative">
@@ -812,7 +812,7 @@ function LandingPage() {
                   <div className="relative min-h-[520px] lg:min-h-[100svh] overflow-hidden">
                     <div
                       className="absolute inset-0 bg-cover bg-center"
-                      data-alt="Curtis in a modern interior"
+                      data-alt="Alessa in a modern interior"
                       style={{ backgroundImage: `url('${newsletterLeftImageUrl}')` }}
                     />
                   </div>
@@ -905,7 +905,7 @@ function LandingPage() {
                         <div>BROOKLYN, NY, 11201</div>
                       </div>
                       <div>347.385.1105</div>
-                      <div>CURTIS@SERHANT.COM</div>
+                      <div>ALESSA@SERHANT.COM</div>
                       <div>LIC#: 10301222501</div>
                     </div>
 
@@ -946,7 +946,7 @@ function LandingPage() {
                           CLA Foundation
                         </a>
                         <a className="block hover:text-white transition-colors" href="#about">
-                          About Curtis
+                          About Alessa
                         </a>
                         <a className="block hover:text-white transition-colors" href="#connect">
                           Contact
@@ -966,7 +966,7 @@ function LandingPage() {
                           Terms &amp; Conditions
                         </a>
                         <div className="pt-6 text-white/80 normal-case tracking-[0.08em] text-[10px]">
-                          © 2025 By Curtis Quow Capital Group
+                          © 2025 By Alessa Aichinger
                         </div>
                         <a className="pt-4 inline-block underline underline-offset-4 hover:text-white transition-colors" href="#design">
                           Site Design
@@ -1013,17 +1013,17 @@ function LandingPage() {
                     </div>
 
                     <div className="mt-14 lg:mt-0 lg:absolute lg:left-0 lg:bottom-0 max-w-[620px] text-[9px] leading-5 text-white/70 font-[var(--font-body)]">
-                      Curtis Quow is committed to providing an accessible website. If you have difficulty accessing
+                      Alessa Aichinger is committed to providing an accessible website. If you have difficulty accessing
                       content, have difficulty viewing a file on the website, or notice any accessibility problems, please
                       contact us at 201.500.5431 to specify the nature of the accessibility issue and any assistive
                       technology you use. We strive to provide the content you need in the format you require.
-                      <div className="mt-4">Copyright © 2024 Curtis Quow. All Rights Reserved.</div>
+                      <div className="mt-4">Copyright © 2024 Alessa Aichinger. All Rights Reserved.</div>
                     </div>
                   </div>
                 </div>
 
                 <div className="pointer-events-none absolute left-0 right-0 bottom-[-140px] text-center text-white/[0.22] leading-none tracking-[0.14em]">
-                  <div className="text-[140px] sm:text-[230px] lg:text-[380px]">CURTIS QUOW</div>
+                  <div className="text-[11vw] sm:text-[14vw] lg:text-[16vw] whitespace-nowrap">ALESSA AICHINGER</div>
                 </div>
               </footer>
             </div>
