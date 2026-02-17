@@ -182,3 +182,56 @@
   background-image: url(https://lh3.googleusercontent.com/aida-public/AB6AXuA19vTS5gkwrla9PvLyEyZZQcqtawTgX2dSn_oSwHYJYYQiyWZb5Yf6PQtlopMJpt_iRuht0B7nSAOhimuJulQhYyu6EefCJD7KYJWPL5u9hKalX3G8bI8mOZcblkeFj_j3kms4q7LoCYqQ5PvJKEkvEW_cF9yOR1m89HTM5ni36hUrda5QGWynf2n0JsSVf4ML5_hdtdkh3sIhP79U2edV0NDPJL8Gfxpy0uL2k4vgFafdTzwsDeV5x_hfpBIAWzvV5nlgSqUlWA);
   border-radius: 0.5rem;
 }
+
+@keyframes affiliates-marquee-left {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes affiliates-marquee-right {
+  from {
+    transform: translateX(-50%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+.affiliates-marquee {
+  overflow: hidden;
+}
+
+.affiliates-marquee-track {
+  display: flex;
+  align-items: center;
+  width: max-content;
+  gap: 3.5rem;
+  will-change: transform;
+}
+
+.affiliates-marquee-item {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 10rem;
+  height: 3rem;
+}
+
+.affiliates-marquee-right {
+  animation: affiliates-marquee-right 28s linear infinite;
+}
+
+.affiliates-marquee-left {
+  animation: affiliates-marquee-left 28s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .affiliates-marquee-right,
+  .affiliates-marquee-left {
+    animation: none;
+  }
+}

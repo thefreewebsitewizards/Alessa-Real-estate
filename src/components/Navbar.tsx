@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 
 type NavbarMode = 'solid' | 'overlay'
@@ -19,83 +19,207 @@ const navItems = [
 
 function Navbar({ mode = 'solid' }: NavbarProps) {
   const [menuOpen, setMenuOpen] = useState(false)
+  const [overlayVisible, setOverlayVisible] = useState(true)
+  const [overlayAtTop, setOverlayAtTop] = useState(true)
+  const lastScrollYRef = useRef(0)
+  const tickingRef = useRef(false)
+
+  useEffect(() => {
+    if (!menuOpen) {
+      return
+    }
+
+    const previousOverflow = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        setMenuOpen(false)
+      }
+    }
+
+    window.addEventListener('keydown', onKeyDown)
+    return () => {
+      document.body.style.overflow = previousOverflow
+      window.removeEventListener('keydown', onKeyDown)
+    }
+  }, [menuOpen])
+
+  useEffect(() => {
+    if (mode !== 'overlay') {
+      return
+    }
+
+    lastScrollYRef.current = typeof window === 'undefined' ? 0 : window.scrollY || 0
+
+    const onScroll = () => {
+      if (tickingRef.current) {
+        return
+      }
+      tickingRef.current = true
+
+      requestAnimationFrame(() => {
+        tickingRef.current = false
+
+        const currentY = window.scrollY || 0
+        const prevY = lastScrollYRef.current
+        const delta = currentY - prevY
+        const atTop = currentY <= 4
+
+        setOverlayAtTop(atTop)
+
+        if (atTop) {
+          setOverlayVisible(true)
+        } else if (menuOpen) {
+          setOverlayVisible(true)
+        } else if (delta > 6) {
+          setOverlayVisible(false)
+        } else if (delta < -6) {
+          setOverlayVisible(true)
+        }
+
+        lastScrollYRef.current = currentY
+      })
+    }
+
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => {
+      window.removeEventListener('scroll', onScroll)
+    }
+  }, [menuOpen, mode])
 
   const headerClassName =
     mode === 'overlay'
-      ? 'absolute inset-x-0 top-0 z-50'
-      : 'sticky top-0 z-50 bg-black/70 backdrop-blur-md border-b border-white/10'
+      ? 'fixed inset-x-0 top-0 z-50'
+      : 'sticky top-0 z-50 bg-black/70 backdrop-blur-md border-b border-white/10 pt-[env(safe-area-inset-top)]'
 
-  const innerClassName = mode === 'overlay' ? 'py-7' : 'py-4'
+  const innerClassName = mode === 'overlay' && overlayAtTop ? 'py-7' : 'py-4'
+  const barClassName =
+    mode === 'overlay'
+      ? [
+          'pt-[env(safe-area-inset-top)]',
+          overlayAtTop ? 'bg-transparent' : 'bg-[#132c43]',
+          'transition-transform duration-300 ease-out',
+          overlayVisible ? 'translate-y-0' : '-translate-y-full pointer-events-none',
+          'will-change-transform',
+        ].join(' ')
+      : ''
 
   return (
     <header className={headerClassName}>
-      <div className={`max-w-[1500px] mx-auto px-6 lg:px-10 ${innerClassName}`}>
-        <div className="flex items-start justify-between gap-8">
-          <Link className="leading-none shrink-0" to="/">
-            <div className="text-[26px] sm:text-[28px] tracking-[0.16em] text-white">
-              CURTIS QUOW
-            </div>
-            <div className="mt-2 text-[9px] tracking-[0.34em] uppercase text-white/70 font-[var(--font-body)]">
-              Redefining the Art of Real Estate
-            </div>
-          </Link>
-
-          <nav className="hidden lg:flex items-center gap-10 pt-2">
-            {navItems.map((item) => (
-              <a
-                key={item.label}
-                className="relative text-[11px] tracking-[0.38em] uppercase text-white/75 hover:text-white transition-colors after:absolute after:left-0 after:-bottom-2 after:h-px after:w-0 after:bg-white/60 hover:after:w-full after:transition-[width] after:duration-300"
-                href={item.href}
-              >
-                {item.label}
-              </a>
-            ))}
-          </nav>
-
-          <div className="flex flex-col items-end gap-3 pt-1 shrink-0">
-            <div className="flex items-center gap-4">
-              <Link className="text-white/70 hover:text-white transition-colors" to="/cart" aria-label="Private">
-                <span className="material-symbols-outlined text-[22px] leading-none">lock</span>
-              </Link>
-              <button
-                className="text-white/80 hover:text-white transition-colors"
-                onClick={() => setMenuOpen((prev) => !prev)}
-                type="button"
-                aria-label="Menu"
-                aria-expanded={menuOpen}
-              >
-                <span className="sr-only">Menu</span>
-                <span className="flex flex-col gap-[6px] items-end">
-                  <span className="block h-[2px] w-7 bg-white/80" />
-                  <span className="block h-[2px] w-6 bg-white/80" />
-                  <span className="block h-[2px] w-5 bg-white/80" />
-                </span>
-              </button>
-            </div>
-
-            <Link className="flex items-center gap-2 text-[12px] text-white/45 hover:text-white/75 transition-colors font-[var(--font-body)]" to="/signin">
-              <span className="material-symbols-outlined text-[18px] leading-none">account_circle</span>
-              <span>Log In</span>
+      <div className={barClassName}>
+        <div className={`max-w-[1500px] mx-auto px-6 lg:px-10 ${innerClassName}`}>
+          <div className="flex items-center justify-between gap-4 sm:gap-8">
+            <Link className="leading-none shrink-0" to="/">
+              <div className="text-[18px] sm:text-[28px] tracking-[0.14em] sm:tracking-[0.16em] text-white whitespace-nowrap">
+                CURTIS QUOW
+              </div>
+              <div className="hidden sm:block mt-2 text-[9px] tracking-[0.34em] uppercase text-white/70 font-[var(--font-body)]">
+                Redefining the Art of Real Estate
+              </div>
             </Link>
-          </div>
-        </div>
-      </div>
 
-      {menuOpen ? (
-        <div className="lg:hidden bg-black/80 backdrop-blur-md border-t border-white/10">
-          <div className="max-w-[1500px] mx-auto px-6 lg:px-10 py-6">
-            <nav className="flex flex-col gap-5">
+            <nav className="hidden lg:flex items-center gap-10 pt-2">
               {navItems.map((item) => (
                 <a
                   key={item.label}
-                  className="text-[12px] tracking-[0.34em] uppercase text-white/80 hover:text-white transition-colors"
+                  className="relative text-[11px] tracking-[0.38em] uppercase text-white/75 hover:text-white transition-colors after:absolute after:left-0 after:-bottom-2 after:h-px after:w-0 after:bg-white/60 hover:after:w-full after:transition-[width] after:duration-300"
                   href={item.href}
-                  onClick={() => setMenuOpen(false)}
                 >
                   {item.label}
                 </a>
               ))}
             </nav>
+
+            <div className="flex items-center gap-4 shrink-0">
+              <div className="flex items-center gap-4">
+                <Link className="text-white/70 hover:text-white transition-colors" to="/cart" aria-label="Private">
+                  <span className="material-symbols-outlined text-[22px] leading-none">lock</span>
+                </Link>
+                <button
+                  className="text-white/80 hover:text-white transition-colors p-2 -m-2"
+                  onClick={() => setMenuOpen((prev) => !prev)}
+                  type="button"
+                  aria-label="Menu"
+                  aria-expanded={menuOpen}
+                >
+                  <span className="sr-only">Menu</span>
+                  <span className="flex flex-col gap-[6px] items-end">
+                    <span className="block h-[2px] w-7 bg-white/80" />
+                    <span className="block h-[2px] w-6 bg-white/80" />
+                    <span className="block h-[2px] w-5 bg-white/80" />
+                  </span>
+                </button>
+              </div>
+
+              <Link
+                className="flex items-center gap-2 text-[12px] text-white/60 hover:text-white transition-colors font-[var(--font-body)]"
+                to="/signin"
+              >
+                <span className="material-symbols-outlined text-[18px] leading-none">account_circle</span>
+                <span className="hidden sm:inline">Log In</span>
+              </Link>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {menuOpen ? (
+        <div className="fixed inset-0 z-[80] lg:hidden">
+          <button
+            type="button"
+            className="absolute inset-0 bg-black/40"
+            aria-label="Close menu"
+            onClick={() => setMenuOpen(false)}
+          />
+          <div className="absolute right-0 top-0 h-full w-[88vw] max-w-[390px] bg-white text-[#132c43] shadow-2xl">
+            <div className="flex items-center justify-end px-8 pt-7">
+              <button
+                type="button"
+                aria-label="Close menu"
+                onClick={() => setMenuOpen(false)}
+                className="h-10 w-10 flex items-center justify-center text-[#132c43]/80 hover:text-[#132c43] transition-colors"
+              >
+                <span className="text-[28px] leading-none" aria-hidden>
+                  ×
+                </span>
+              </button>
+            </div>
+
+            <nav className="mt-6 px-8">
+              <div className="border-t border-[#132c43]/35">
+                {[
+                  { label: 'HOME', href: '#home' },
+                  { label: "LET'S CONNECT", href: '#connect' },
+                  { label: 'OUR SERVICES', href: '#services', chevron: true },
+                  { label: 'CONSTRUCTION', href: '#construction' },
+                  { label: 'MY BOOK', href: '#book' },
+                  { label: 'EVENTS', href: '#events' },
+                  { label: 'NYREM', href: '#nyrem', chevron: true },
+                  { label: 'CLA FOUNDATION', href: '#cla' },
+                  { label: 'ABOUT CURTIS', href: '#about' },
+                  { label: 'CONTACT', href: '#connect' },
+                ].map((item) => (
+                  <a
+                    key={item.label}
+                    href={item.href}
+                    onClick={() => setMenuOpen(false)}
+                    className="relative block border-b border-[#132c43]/35 py-4 text-center text-[14px] tracking-[0.22em] text-[#132c43]/80 hover:text-[#132c43] transition-colors"
+                  >
+                    <span className="font-display">{item.label}</span>
+                    {item.chevron ? (
+                      <span className="material-symbols-outlined absolute right-0 top-1/2 -translate-y-1/2 text-[20px] text-[#132c43]/55">
+                        keyboard_arrow_down
+                      </span>
+                    ) : null}
+                  </a>
+                ))}
+              </div>
+            </nav>
+
+            <div className="mt-10 px-8">
+              <div className="text-center text-[22px] tracking-[0.14em] text-[#9cb0c3]">CURTIS QUOW</div>
+            </div>
           </div>
         </div>
       ) : null}
