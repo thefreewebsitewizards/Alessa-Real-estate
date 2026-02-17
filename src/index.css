@@ -17,6 +17,11 @@
   --radius-full: 9999px;
 }
 
+.curtis-theme {
+  --font-display: "Cormorant Garamond", serif;
+  --font-body: "Inter", sans-serif;
+}
+
 ::-webkit-scrollbar {
   width: 8px;
 }
