@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { type MouseEvent, useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 
 type NavbarMode = 'solid' | 'overlay'
@@ -21,6 +21,7 @@ function Navbar({ mode = 'solid' }: NavbarProps) {
   const [menuOpen, setMenuOpen] = useState(false)
   const [overlayVisible, setOverlayVisible] = useState(true)
   const [overlayAtTop, setOverlayAtTop] = useState(true)
+  const headerRef = useRef<HTMLElement | null>(null)
   const lastScrollYRef = useRef(0)
   const tickingRef = useRef(false)
 
@@ -93,20 +94,42 @@ function Navbar({ mode = 'solid' }: NavbarProps) {
       ? 'fixed inset-x-0 top-0 z-50'
       : 'sticky top-0 z-50 bg-black/70 backdrop-blur-md border-b border-white/10 pt-[env(safe-area-inset-top)]'
 
-  const innerClassName = mode === 'overlay' && overlayAtTop ? 'py-7' : 'py-4'
+  const innerClassName = mode === 'overlay' ? 'py-4' : 'py-4'
   const barClassName =
     mode === 'overlay'
       ? [
           'pt-[env(safe-area-inset-top)]',
-          overlayAtTop ? 'bg-transparent' : 'bg-[#132c43]',
+          overlayAtTop ? 'bg-transparent' : 'bg-[#651649]',
           'transition-transform duration-300 ease-out',
           overlayVisible ? 'translate-y-0' : '-translate-y-full pointer-events-none',
           'will-change-transform',
         ].join(' ')
       : ''
 
+  const onNavLinkClick = (event: MouseEvent<HTMLAnchorElement>, href: string) => {
+    if (!href.startsWith('#')) {
+      return
+    }
+
+    event.preventDefault()
+    setMenuOpen(false)
+
+    const targetId = href.slice(1)
+    const targetEl = document.getElementById(targetId)
+    if (!targetEl) {
+      return
+    }
+
+    const headerHeight = headerRef.current?.getBoundingClientRect().height ?? 0
+    const targetTop = targetEl.getBoundingClientRect().top + window.scrollY
+    const y = Math.max(0, targetTop - headerHeight)
+
+    window.history.replaceState(null, '', href)
+    window.scrollTo({ top: y, behavior: 'smooth' })
+  }
+
   return (
-    <header className={headerClassName}>
+    <header ref={headerRef} className={headerClassName}>
       <div className={barClassName}>
         <div className={`max-w-[1500px] mx-auto px-6 lg:px-10 ${innerClassName}`}>
           <div className="flex items-center justify-between gap-4 sm:gap-8">
@@ -116,17 +139,18 @@ function Navbar({ mode = 'solid' }: NavbarProps) {
                 <div className="mt-1 text-[16px] sm:hidden">AICHINGER</div>
                 <div className="hidden sm:block text-[28px]">ALESSA AICHINGER</div>
               </div>
-              <div className="hidden sm:block mt-2 text-[9px] tracking-[0.34em] uppercase text-white/70 font-[var(--font-body)]">
+              <div className="hidden sm:block mt-2 text-[12px] tracking-[0.34em] uppercase text-white/70 font-[var(--font-body)] font-semibold">
                 Redefining the Art of Real Estate
               </div>
             </Link>
 
-            <nav className="hidden lg:flex items-center gap-10 pt-2">
+            <nav className="hidden lg:flex items-center gap-8 pt-2">
               {navItems.map((item) => (
                 <a
                   key={item.label}
-                  className="relative text-[11px] tracking-[0.38em] uppercase text-white/75 hover:text-white transition-colors after:absolute after:left-0 after:-bottom-2 after:h-px after:w-0 after:bg-white/60 hover:after:w-full after:transition-[width] after:duration-300"
+                  className="relative text-[12px] xl:text-[13px] tracking-[0.28em] uppercase text-white/75 hover:text-white transition-colors font-semibold whitespace-nowrap after:absolute after:left-0 after:-bottom-2 after:h-px after:w-0 after:bg-white/60 hover:after:w-full after:transition-[width] after:duration-300"
                   href={item.href}
+                  onClick={(event) => onNavLinkClick(event, item.href)}
                 >
                   {item.label}
                 </a>
@@ -134,33 +158,20 @@ function Navbar({ mode = 'solid' }: NavbarProps) {
             </nav>
 
             <div className="flex items-center gap-4 shrink-0">
-              <div className="flex items-center gap-4">
-                <Link className="text-white/70 hover:text-white transition-colors" to="/cart" aria-label="Private">
-                  <span className="material-symbols-outlined text-[22px] leading-none">lock</span>
-                </Link>
-                <button
-                  className="text-white/80 hover:text-white transition-colors p-2 -m-2"
-                  onClick={() => setMenuOpen((prev) => !prev)}
-                  type="button"
-                  aria-label="Menu"
-                  aria-expanded={menuOpen}
-                >
-                  <span className="sr-only">Menu</span>
-                  <span className="flex flex-col gap-[6px] items-end">
-                    <span className="block h-[2px] w-7 bg-white/80" />
-                    <span className="block h-[2px] w-6 bg-white/80" />
-                    <span className="block h-[2px] w-5 bg-white/80" />
-                  </span>
-                </button>
-              </div>
-
-              <Link
-                className="flex items-center gap-2 text-[12px] text-white/60 hover:text-white transition-colors font-[var(--font-body)]"
-                to="/signin"
+              <button
+                className="text-white/80 hover:text-white transition-colors p-2 -m-2"
+                onClick={() => setMenuOpen((prev) => !prev)}
+                type="button"
+                aria-label="Menu"
+                aria-expanded={menuOpen}
               >
-                <span className="material-symbols-outlined text-[18px] leading-none">account_circle</span>
-                <span className="hidden sm:inline">Log In</span>
-              </Link>
+                <span className="sr-only">Menu</span>
+                <span className="flex flex-col gap-[6px] items-end">
+                  <span className="block h-[2px] w-7 bg-white/80" />
+                  <span className="block h-[2px] w-6 bg-white/80" />
+                  <span className="block h-[2px] w-5 bg-white/80" />
+                </span>
+              </button>
             </div>
           </div>
         </div>
@@ -174,13 +185,13 @@ function Navbar({ mode = 'solid' }: NavbarProps) {
             aria-label="Close menu"
             onClick={() => setMenuOpen(false)}
           />
-          <div className="absolute right-0 top-0 h-full w-[88vw] max-w-[390px] bg-white text-[#132c43] shadow-2xl">
+          <div className="absolute right-0 top-0 h-full w-[88vw] max-w-[390px] bg-white text-[#651649] shadow-2xl">
             <div className="flex items-center justify-end px-8 pt-7">
               <button
                 type="button"
                 aria-label="Close menu"
                 onClick={() => setMenuOpen(false)}
-                className="h-10 w-10 flex items-center justify-center text-[#132c43]/80 hover:text-[#132c43] transition-colors"
+                className="h-10 w-10 flex items-center justify-center text-[#651649]/80 hover:text-[#651649] transition-colors"
               >
                 <span className="text-[28px] leading-none" aria-hidden>
                   ×
@@ -189,28 +200,25 @@ function Navbar({ mode = 'solid' }: NavbarProps) {
             </div>
 
             <nav className="mt-6 px-8">
-              <div className="border-t border-[#132c43]/35">
+              <div className="border-t border-[#651649]/35">
                 {[
                   { label: 'HOME', href: '#home' },
                   { label: "LET'S CONNECT", href: '#connect' },
-                  { label: 'OUR SERVICES', href: '#services', chevron: true },
+                  { label: 'SERVICES', href: '#services', chevron: true },
                   { label: 'CONSTRUCTION', href: '#construction' },
                   { label: 'MY BOOK', href: '#book' },
                   { label: 'EVENTS', href: '#events' },
                   { label: 'NYREM', href: '#nyrem', chevron: true },
-                  { label: 'CLA FOUNDATION', href: '#cla' },
-                  { label: 'ABOUT ALESSA', href: '#about' },
-                  { label: 'CONTACT', href: '#connect' },
                 ].map((item) => (
                   <a
                     key={item.label}
                     href={item.href}
-                    onClick={() => setMenuOpen(false)}
-                    className="relative block border-b border-[#132c43]/35 py-4 text-center text-[14px] tracking-[0.22em] text-[#132c43]/80 hover:text-[#132c43] transition-colors"
+                    onClick={(event) => onNavLinkClick(event, item.href)}
+                    className="relative block border-b border-[#651649]/35 py-4 text-center text-[15px] tracking-[0.22em] text-[#651649]/80 hover:text-[#651649] transition-colors font-semibold"
                   >
                     <span className="font-display">{item.label}</span>
                     {item.chevron ? (
-                      <span className="material-symbols-outlined absolute right-0 top-1/2 -translate-y-1/2 text-[20px] text-[#132c43]/55">
+                      <span className="material-symbols-outlined absolute right-0 top-1/2 -translate-y-1/2 text-[20px] text-[#651649]/55">
                         keyboard_arrow_down
                       </span>
                     ) : null}
@@ -220,7 +228,7 @@ function Navbar({ mode = 'solid' }: NavbarProps) {
             </nav>
 
             <div className="mt-10 px-8">
-              <div className="text-center text-[18px] tracking-[0.14em] text-[#9cb0c3]">ALESSA AICHINGER</div>
+              <div className="text-center text-[18px] tracking-[0.14em] text-[#f2b3d0]">ALESSA AICHINGER</div>
             </div>
           </div>
         </div>

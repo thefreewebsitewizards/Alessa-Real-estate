@@ -16,68 +16,51 @@ type FeaturedVideo = {
 }
 
 function LandingPage() {
-  const heroImageUrl =
-    'https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=2400&q=80'
-  const aboutLeftImageUrl =
-    'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=1600&q=80'
-  const aboutInlineImageUrl =
-    'https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?auto=format&fit=crop&w=1200&q=80'
-  const servicesImageUrl =
-    'https://images.unsplash.com/photo-1520607162513-77705c0f0d4a?auto=format&fit=crop&w=2400&q=80'
-  const servicesSkylineUrl =
-    'https://images.unsplash.com/photo-1529619768328-eafa65001f2f?auto=format&fit=crop&w=1200&q=80'
-  const connectedPortraitUrl =
-    'https://images.unsplash.com/photo-1556157382-97eda2d62296?auto=format&fit=crop&w=2400&q=80'
-  const newsletterLeftImageUrl =
-    'https://images.unsplash.com/photo-1520607162513-77705c0f0d4a?auto=format&fit=crop&w=2400&q=80'
-  const newsletterCenterImageUrl =
-    'https://images.unsplash.com/photo-1496588152823-86ff7695e68f?auto=format&fit=crop&w=1400&q=80'
-  const affiliatesBackgroundUrl =
-    'https://images.unsplash.com/photo-1505693314120-0d443867891c?auto=format&fit=crop&w=2600&q=80'
+  const heroVideoUrl = '/Alessa%20Video.mp4'
+  const aboutLeftImageUrl = '/Alessa1.jpg'
+  const aboutInlineImageUrl = '/Alessa2.jpg'
+  const servicesImageUrl = '/Alessa3.jpg'
+  const servicesSkylineUrl = '/Alessa4.jpg'
+  const connectedPortraitUrl = '/Alessa5.jpg'
+  const newsletterLeftImageUrl = '/Alessa6.jpg'
+  const newsletterCenterImageUrl = '/Alessa7.jpg'
+  const affiliatesBackgroundUrl = '/Alessa-placeholder-image.jpg'
   const networkingGallery = useMemo(
     () => [
-      'https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=1200&q=80',
-      'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=1200&q=80',
-      'https://images.unsplash.com/photo-1528605248644-14dd04022da1?auto=format&fit=crop&w=1200&q=80',
-      'https://images.unsplash.com/photo-1521737711867-e3b97375f902?auto=format&fit=crop&w=1200&q=80',
-      'https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1200&q=80',
+      '/Alessa1.jpg',
+      '/Alessa2.jpg',
+      '/Alessa3.jpg',
+      '/Alessa4.jpg',
+      '/Alessa5.jpg',
+      '/Alessa6.jpg',
+      '/Alessa7.jpg',
+      '/Alessa-placeholder-image.jpg',
     ],
     [],
   )
-  const affiliatesLogos = useMemo(
+  const affiliatesLogos = useMemo<{ label: string; text?: boolean; src?: string }[]>(
     () => [
-      { label: 'Levain', src: 'https://cdn.simpleicons.org/levain/ffffff' },
+      { label: 'LEVAIN', text: true },
       { label: 'NYREM', text: true },
-      { label: 'SERHANT.', src: 'https://cdn.simpleicons.org/serhant/ffffff' },
-      { label: 'RIVIAN', src: 'https://cdn.simpleicons.org/rivian/ffffff' },
+      { label: 'SERHANT.', text: true },
+      { label: 'RIVIAN', text: true },
       { label: 'WHITTY DESIGNS', text: true },
-      { label: 'CIROC', src: 'https://cdn.simpleicons.org/ciroc/ffffff' },
-      { label: 'BULOVA', src: 'https://cdn.simpleicons.org/bulova/ffffff' },
-      { label: 'Coca-Cola', src: 'https://cdn.simpleicons.org/cocacola/ffffff' },
-      { label: 'REBNY', src: 'https://cdn.simpleicons.org/rebny/ffffff' },
-      { label: 'Perrier', src: 'https://cdn.simpleicons.org/perrier/ffffff' },
+      { label: 'CIROC', text: true },
+      { label: 'BULOVA', text: true },
+      { label: 'COCA-COLA', text: true },
+      { label: 'REBNY', text: true },
+      { label: 'PERRIER', text: true },
       { label: 'PIECE OF CAKE', text: true },
     ],
     [],
   )
-  const claFoundationImageUrl =
-    'https://images.unsplash.com/photo-1521737711867-e3b97375f902?auto=format&fit=crop&w=2400&q=80'
+  const claFoundationImageUrl = '/Alessa-placeholder-image.jpg'
   const featuredVideos = useMemo<FeaturedVideo[]>(
     () => [
       {
-        id: 'networking',
-        label: 'NETWORKING',
-        posterUrl: 'https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=1200&q=80',
-      },
-      {
-        id: 'cq-unscripted',
-        label: 'CQ UNSCRIPTED',
-        posterUrl: 'https://images.unsplash.com/photo-1521737711867-e3b97375f902?auto=format&fit=crop&w=1200&q=80',
-      },
-      {
-        id: 'your-realtor',
-        label: 'YOUR REALTOR',
-        posterUrl: 'https://images.unsplash.com/photo-1520975916090-3105956dac38?auto=format&fit=crop&w=1200&q=80',
+        id: 'alessa-insta-1',
+        label: 'ALESSA INSTA',
+        posterUrl: '/Alessa-placeholder-image.jpg',
       },
     ],
     [],
@@ -85,53 +68,46 @@ function LandingPage() {
   const featuredProperties = useMemo<FeaturedProperty[]>(
     () => [
       {
-        id: '432-park-ave-69',
-        address: '432 PARK AVE 69',
-        details: '5 Bedrooms · 6 Full Baths · 2 Half Baths · 8,040 Sq Ft.',
-        price: '55,000,000',
+        id: '281-park-ave-south',
+        address: '281 PARK AVE SOUTH',
+        details: 'Commercial · 42,500 Sq Ft · SERHANT. Signature',
+        price: 'Price Upon Request',
         imageUrl: 'https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=2600&q=80',
       },
       {
-        id: '436-west-20th-st',
-        address: '436 WEST 20TH ST',
-        details: '7 Bedrooms · 8 Full Baths · 3 Half Baths · 10,160 Sq Ft.',
-        price: '$35,560,000',
+        id: '56-north-moore-st',
+        address: '56 NORTH MOORE ST',
+        details: 'Commercial · SERHANT. Signature',
+        price: '$75,000,000',
         imageUrl: 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=2600&q=80',
       },
       {
-        id: '19-park-pl-ph',
-        address: '19 PARK PL, PH',
-        details: '3 Bedrooms · 3 Full Baths · 1 Half Bath · 2,672 Sq Ft.',
-        price: '$10,995,000',
+        id: '432-park-avenue-69',
+        address: '432 PARK AVENUE 69',
+        details: '5 Beds · 6 Full Baths · 8,040 Sq Ft · SERHANT. Signature',
+        price: '$52,000,000',
         imageUrl: 'https://images.unsplash.com/photo-1512918728675-ed5a9ecdebfd?auto=format&fit=crop&w=2600&q=80',
       },
       {
-        id: '2528-noyack-rd',
-        address: '2528 NOYACK RD',
-        details: '8 Bedrooms · 7 Full Baths · 2 Half Baths · 8,500 Sq Ft.',
-        price: '$8,995,000',
+        id: '35-east-62nd-street',
+        address: '35 E 62ND STREET',
+        details: '0 Beds · 5 Full Baths · 25,000 Sq Ft · Listing Courtesy Melissa Karen Post with Serhant',
+        price: '$49,900,000',
         imageUrl: 'https://images.unsplash.com/photo-1501183638710-841dd1904471?auto=format&fit=crop&w=2600&q=80',
-      },
-      {
-        id: '34-w-12th-street',
-        address: '34 W 12TH STREET',
-        details: '5 Bedrooms · 5 Full Baths · 3 Half Baths · 3,918 Sq Ft.',
-        price: '$29,995,000',
-        imageUrl: 'https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=2600&q=80',
       },
       {
         id: '125-e-65th-street',
         address: '125 E 65TH STREET',
-        details: '6 Bedrooms · 7 Full Baths · 4 Half Baths · 3,542 Sq Ft.',
+        details: '6 Beds · 7 Full Baths · 14,346 Sq Ft · Listing Courtesy Marc Riedel with Serhant',
         price: '$45,500,000',
-        imageUrl: 'https://images.unsplash.com/photo-1502005229762-cf1b2da7c5d6?auto=format&fit=crop&w=2600&q=80',
+        imageUrl: 'https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=2600&q=80',
       },
       {
-        id: '50-bridge-park-drive-ph2c',
-        address: '50 BRIDGE PARK DRIVE, PH2C',
-        details: '3 Bedrooms · 3 Full Baths · 1 Half Bath · 3,701 Sq Ft.',
-        price: '$5,995,000',
-        imageUrl: 'https://images.unsplash.com/photo-1505693314120-0d443867891c?auto=format&fit=crop&w=2600&q=80',
+        id: '20-greene-st-ph',
+        address: '20 GREENE STREET PH',
+        details: '3 Beds · 4 Full Baths · 6,814 Sq Ft',
+        price: '$35,950,000',
+        imageUrl: 'https://images.unsplash.com/photo-1502005229762-cf1b2da7c5d6?auto=format&fit=crop&w=2600&q=80',
       },
     ],
     [],
@@ -220,10 +196,13 @@ function LandingPage() {
       <main>
         <section id="home" className="relative w-full h-[100svh] min-h-[720px] overflow-hidden">
           <div className="absolute inset-0">
-            <div
-              className="absolute inset-0 bg-cover bg-center scale-105"
-              data-alt="Warm architectural interior lighting"
-              style={{ backgroundImage: `url('${heroImageUrl}')` }}
+            <video
+              className="absolute inset-0 w-full h-full object-cover scale-105"
+              src={heroVideoUrl}
+              autoPlay
+              muted
+              loop
+              playsInline
             />
             <div className="absolute inset-0 bg-black/35" />
             <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/10 to-black/35" />
@@ -232,23 +211,23 @@ function LandingPage() {
           <Navbar mode="overlay" />
 
           <button
-            className="fixed right-7 bottom-7 z-[60] h-14 w-14 rounded-full bg-[#2b4d67] shadow-[0_10px_30px_rgba(0,0,0,0.35)] flex items-center justify-center hover:bg-[#345a76] transition-colors"
+            className="fixed right-7 bottom-7 z-[60] h-14 w-14 rounded-full bg-[#b53d79] shadow-[0_10px_30px_rgba(0,0,0,0.35)] flex items-center justify-center hover:bg-[#c04a86] transition-colors"
             type="button"
             aria-label="Chat"
           >
             <span className="material-symbols-outlined text-white text-[26px] leading-none">mode_comment</span>
           </button>
 
-          <div className="absolute left-0 right-0 bottom-0 z-20 bg-[#0c2b43]/70 backdrop-blur-sm">
+          <div className="absolute left-0 right-0 bottom-0 z-20 bg-[#7a1b5c]/70 backdrop-blur-sm">
             <div className="max-w-[1500px] mx-auto px-6 lg:px-10 py-10">
               <div className="grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-0 items-start">
                 <div className="text-center md:text-left">
                   <div className="text-[40px] md:text-[46px] leading-none tracking-wide text-white">
-                    <span>10</span>
+                    <span>8</span>
                     <span className="mx-2">+</span>
                     <span>Years</span>
                   </div>
-                  <div className="mt-4 text-[10px] tracking-[0.34em] uppercase text-white/70 font-[var(--font-body)]">
+                  <div className="mt-4 text-[12px] tracking-[0.34em] uppercase text-white/70 font-[var(--font-body)] font-semibold">
                     Experience in the Real Estate
                     <br />
                     Industry
@@ -257,10 +236,11 @@ function LandingPage() {
 
                 <div className="text-center">
                   <div className="text-[40px] md:text-[46px] leading-none tracking-wide text-white">
-                    <span>Over</span>
-                    <span className="mx-3">200M</span>
+                    <span>$</span>
+                    <span className="mx-3">100M</span>
+                    <span>+</span>
                   </div>
-                  <div className="mt-4 text-[10px] tracking-[0.34em] uppercase text-white/70 font-[var(--font-body)]">
+                  <div className="mt-4 text-[12px] tracking-[0.34em] uppercase text-white/70 font-[var(--font-body)] font-semibold">
                     In Total Sales:
                     <br />
                     New York
@@ -269,14 +249,13 @@ function LandingPage() {
 
                 <div className="text-center md:text-right">
                   <div className="text-[40px] md:text-[46px] leading-none tracking-wide text-white">
-                    <span>2,000</span>
-                    <span>+</span>
-                    <span className="ml-3">Affiliates</span>
+                    <span>4</span>
+                    <span className="ml-3">Languages</span>
                   </div>
-                  <div className="mt-4 text-[10px] tracking-[0.34em] uppercase text-white/70 font-[var(--font-body)]">
-                    Trusted Industry
+                  <div className="mt-4 text-[12px] tracking-[0.34em] uppercase text-white/70 font-[var(--font-body)] font-semibold">
+                    German · English
                     <br />
-                    Professionals
+                    Spanish · Italian
                   </div>
                 </div>
               </div>
@@ -304,20 +283,31 @@ function LandingPage() {
                 }}
               />
               <div className="relative">
-                <div className="text-[10px] tracking-[0.34em] uppercase text-[#2b4d67] font-[var(--font-body)]">
-                  About Us
+                <div className="text-[12px] tracking-[0.34em] uppercase text-[#b53d79] font-[var(--font-body)] font-semibold">
+                  About Alessa
                 </div>
                 <h2 className="mt-4 text-[44px] sm:text-[52px] leading-[0.95] tracking-wide">
-                  MEET ALESSA
+                  ALESSA AICHINGER
                 </h2>
                 <p className="mt-6 text-[13px] leading-6 text-[#3a3a3a] font-[var(--font-body)] max-w-[420px]">
-                  Discover the difference with Alessa Aichinger, a Brooklyn native and seasoned real estate expert dedicated
-                  to navigating the complexities of buying, selling, and renting in New York&apos;s dynamic property market.
+                  Austrian-born Alessa Aichinger is a star real estate broker who brings local expertise, international
+                  perspective, and first-hand investment experience to every deal. She is fluent in four languages and is
+                  known for her honesty, creativity, and communication skills. She and her business partner, Curtis, have
+                  done over $100M in sales, encompassing commercial transactions and luxury properties throughout Manhattan
+                  and Brooklyn.
                 </p>
+                <p className="mt-6 text-[13px] leading-6 text-[#b53d79] font-[var(--font-body)] font-semibold max-w-[420px]">
+                  “I offer tailored consultations, expert advice, and a seamless experience throughout your real estate
+                  journey,” says Alessa. “My promise to you is simple: listen to your needs, execute on your goals, and
+                  ensure you feel confident and supported every step of the way, 24/7.”
+                </p>
+                <div className="mt-6 text-[12px] tracking-[0.2em] uppercase text-[#b53d79] font-[var(--font-body)] font-semibold">
+                  Licensed Real Estate Salesperson · New York City · LIC#: 10401333915
+                </div>
 
                 <div className="mt-12">
                   <div
-                    className="w-full max-w-[520px] aspect-[16/9] bg-cover bg-center shadow-[0_24px_55px_rgba(0,0,0,0.25)]"
+                    className="w-full max-w-[520px] aspect-[16/9] bg-cover bg-top shadow-[0_24px_55px_rgba(0,0,0,0.25)]"
                     data-alt="Alessa with clients by the pool"
                     style={{ backgroundImage: `url('${aboutInlineImageUrl}')` }}
                   />
@@ -328,20 +318,73 @@ function LandingPage() {
             <div className="px-6 sm:px-10 lg:px-14 py-14 lg:py-20 flex items-start">
               <div className="w-full max-w-[420px] lg:pt-20">
                 <p className="text-[13px] leading-6 text-[#3a3a3a] font-[var(--font-body)]">
-                  With over nine years of experience, a strong financial background, and a commitment to transparency and
-                  client interests, Alessa is your go-to guide for everything from first-time home buying to luxury rentals.
-                  Connect with Alessa for unmatched expertise and a truly personalized real estate journey.
+                  Alessa leverages her extensive network and exceptional grasp of trends, pricing, and inventory to create
+                  long-term value for her clients. Having previously worked for two of the most influential development
+                  companies, The Related Companies and The Moinian Group, she is also a wellspring of local institutional
+                  knowledge.
                 </p>
-                <div className="mt-10">
-                  <a
-                    className="inline-flex items-center justify-center gap-3 bg-[#0c2b43] text-white px-10 py-4 text-[11px] tracking-[0.26em] uppercase font-[var(--font-body)] hover:bg-[#10344f] transition-colors"
-                    href="#connect"
-                  >
-                    <span>Read More</span>
-                    <span aria-hidden className="text-[14px] leading-none">
-                      +
-                    </span>
-                  </a>
+                <p className="mt-6 text-[13px] leading-6 text-[#3a3a3a] font-[var(--font-body)]">
+                  Her familiarity with residential and commercial properties, combined with her success as an investor in
+                  the U.S. and Europe, gives her a fresh perspective and unique insights, whether working with buyers,
+                  sellers, business owners, or developers—domestically and internationally. She also possesses an
+                  established online following, underscoring her ability to connect with a broad audience.
+                </p>
+                <p className="mt-6 text-[13px] leading-6 text-[#3a3a3a] font-[var(--font-body)]">
+                  An agent, investor, landlord, and passionate real estate guru, Alessa loves guiding others through major
+                  life decisions while helping them achieve their dreams. She was drawn to the industry for its combination
+                  of people, places, and vision and continues to be excited by its power to shape communities, change
+                  lives, and empower entrepreneurs.
+                </p>
+                <p className="mt-6 text-[13px] leading-6 text-[#3a3a3a] font-[var(--font-body)]">
+                  Now a resident of DUMBO, Alessa grew up in a small Austrian town and has lived in five different
+                  countries. She holds a bachelor’s degree in political science and languages and a master’s in music and
+                  arts business management. Her previous roles include serving as a personal assistant to a celebrity
+                  matchmaker, a marketing manager at a music and events space in Harlem, and holding various positions in
+                  entertainment, events, music, and films.
+                </p>
+                <p className="mt-6 text-[13px] leading-6 text-[#3a3a3a] font-[var(--font-body)]">
+                  Alessa continues to stay involved in the arts by doing commissioned art sales, art walls, organizing art
+                  events, and doing singing/songwriting, acting, and On-Air/TV hosting. She is an avid traveler who enjoys
+                  immersing herself in different cultures. Giving back to organizations that support people, animals, and
+                  the environment is also dear to her heart.
+                </p>
+                <div className="mt-10 space-y-8">
+                  <div>
+                    <div className="text-[12px] tracking-[0.34em] uppercase text-[#b53d79] font-[var(--font-body)] font-semibold">
+                      Experience
+                    </div>
+                    <div className="mt-4 space-y-2 text-[13px] leading-6 text-[#3a3a3a] font-[var(--font-body)]">
+                      <div>Worked at the Related Companies and ran multiple buildings for the Moinian Group (in-house)</div>
+                      <div>8+ years in Real Estate (Residential and Commercial)</div>
+                      <div>DUMBO property owner/resident, real estate investor, expert in Brooklyn and Manhattan</div>
+                      <div>First-time home buyers, foreign buyers, luxury rentals and sales, new development, multi-family</div>
+                      <div>Investor-friendly agent</div>
+                    </div>
+                  </div>
+                  <div>
+                    <div className="text-[12px] tracking-[0.34em] uppercase text-[#b53d79] font-[var(--font-body)] font-semibold">
+                      Interests
+                    </div>
+                    <div className="mt-4 space-y-2 text-[13px] leading-6 text-[#3a3a3a] font-[var(--font-body)]">
+                      <div>Music</div>
+                      <div>Acting</div>
+                      <div>Hosting</div>
+                      <div>Brand Collaborations</div>
+                      <div>Skiing</div>
+                      <div>Traveling</div>
+                    </div>
+                  </div>
+                  <div>
+                    <div className="text-[12px] tracking-[0.34em] uppercase text-[#b53d79] font-[var(--font-body)] font-semibold">
+                      Languages
+                    </div>
+                    <div className="mt-4 space-y-2 text-[13px] leading-6 text-[#3a3a3a] font-[var(--font-body)]">
+                      <div>German (fluent)</div>
+                      <div>English (fluent)</div>
+                      <div>Spanish (fluent)</div>
+                      <div>Italian (very good)</div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -351,7 +394,7 @@ function LandingPage() {
         <section id="properties" className="bg-[#f6f6f4] text-[#111]">
           <div className="max-w-[1500px] mx-auto px-6 lg:px-10 pt-16 lg:pt-20 pb-8">
             <div className="text-center">
-              <div className="text-[10px] tracking-[0.34em] uppercase text-[#2b4d67] font-[var(--font-body)]">
+              <div className="text-[12px] tracking-[0.34em] uppercase text-[#b53d79] font-[var(--font-body)] font-semibold">
                 Our Most Exclusive House, Apartments, Townhomes + More
               </div>
               <h2 className="mt-5 text-[44px] sm:text-[60px] leading-[0.9] tracking-[0.06em]">
@@ -419,7 +462,7 @@ function LandingPage() {
                             {property.address}
                           </div>
 
-                          <div className="hidden md:block text-center text-[9px] tracking-[0.32em] uppercase text-black/70 font-[var(--font-body)]">
+                          <div className="hidden md:block text-center text-[11px] tracking-[0.32em] uppercase text-black/70 font-[var(--font-body)] font-semibold">
                             {property.details}
                           </div>
 
@@ -460,7 +503,7 @@ function LandingPage() {
 
                 <div className="bg-white text-[#111] px-8 sm:px-12 lg:px-16 py-14 lg:py-16 flex items-center">
                   <div className="max-w-[520px]">
-                    <div className="text-[10px] tracking-[0.34em] uppercase text-[#2b4d67] font-[var(--font-body)]">
+                    <div className="text-[12px] tracking-[0.34em] uppercase text-[#b53d79] font-[var(--font-body)] font-semibold">
                       Let&apos;s Connect
                     </div>
                     <h2 className="mt-6 text-[44px] sm:text-[54px] leading-[0.92] tracking-[0.04em]">
@@ -469,7 +512,7 @@ function LandingPage() {
 
                     <div className="mt-12 space-y-10">
                       <div>
-                        <div className="text-[#2b4d67] text-[20px] tracking-[0.08em]">
+                        <div className="text-[#b53d79] text-[20px] tracking-[0.08em]">
                           REAL ESTATE CONSULTATION
                         </div>
                         <p className="mt-4 text-[13px] leading-6 text-[#3a3a3a] font-[var(--font-body)]">
@@ -478,7 +521,7 @@ function LandingPage() {
                       </div>
 
                       <div>
-                        <div className="text-[#2b4d67] text-[20px] tracking-[0.08em]">
+                        <div className="text-[#b53d79] text-[20px] tracking-[0.08em]">
                           NETWORKING
                         </div>
                         <p className="mt-4 text-[13px] leading-6 text-[#3a3a3a] font-[var(--font-body)]">
@@ -488,7 +531,7 @@ function LandingPage() {
                       </div>
 
                       <div>
-                        <div className="text-[#2b4d67] text-[20px] tracking-[0.08em]">
+                        <div className="text-[#b53d79] text-[20px] tracking-[0.08em]">
                           EVENTS CURATION
                         </div>
                         <p className="mt-4 text-[13px] leading-6 text-[#3a3a3a] font-[var(--font-body)]">
@@ -500,7 +543,7 @@ function LandingPage() {
 
                     <div className="mt-12">
                       <a
-                        className="inline-flex items-center justify-center gap-5 bg-[#0c2b43] text-white px-10 py-4 text-[11px] tracking-[0.26em] uppercase font-[var(--font-body)] hover:bg-[#10344f] transition-colors"
+                        className="inline-flex items-center justify-center gap-5 bg-[#7a1b5c] text-white px-10 py-4 text-[12px] tracking-[0.26em] uppercase font-[var(--font-body)] font-semibold hover:bg-[#8a2a68] transition-colors"
                         href="#connect"
                       >
                         <span>Book Now</span>
@@ -516,7 +559,7 @@ function LandingPage() {
               <div id="videos" className="bg-[#f6f6f4] text-[#111]">
                 <div className="max-w-[1500px] mx-auto px-6 lg:px-10 pt-24 lg:pt-28 pb-20 lg:pb-28">
                   <div className="text-center">
-                    <div className="text-[10px] tracking-[0.34em] uppercase text-[#2b4d67] font-[var(--font-body)]">
+                    <div className="text-[12px] tracking-[0.34em] uppercase text-[#b53d79] font-[var(--font-body)] font-semibold">
                       Let&apos;s Connect
                     </div>
                     <h2 className="mt-8 text-[54px] sm:text-[74px] leading-[0.92] tracking-[0.06em]">
@@ -537,12 +580,12 @@ function LandingPage() {
                             poster={video.posterUrl}
                           >
                             <source
-                              src="https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4"
+                              src="/Alessa-insta-video.mp4"
                               type="video/mp4"
                             />
                           </video>
                         </div>
-                        <div className="mt-10 text-[18px] tracking-[0.08em] text-[#2b4d67] text-center">
+                        <div className="mt-10 text-[18px] tracking-[0.08em] text-[#b53d79] text-center">
                           {video.label}
                         </div>
                       </div>
@@ -551,7 +594,7 @@ function LandingPage() {
                 </div>
               </div>
 
-              <div id="connected" className="bg-[#0c2b43] text-white">
+              <div id="connected" className="bg-[#7a1b5c] text-white">
                 <div className="max-w-[1500px] mx-auto px-6 lg:px-10 py-14 lg:py-16">
                   <div className="grid grid-cols-1 lg:grid-cols-[0.42fr_0.58fr] min-h-[640px] lg:min-h-[82svh]">
                     <div className="relative flex items-center">
@@ -583,7 +626,7 @@ function LandingPage() {
 
                         <div className="mt-12 flex flex-col gap-4 w-full max-w-[240px]">
                           <a
-                            className="h-12 w-full inline-flex items-center justify-center gap-5 bg-white/10 border border-white/15 text-white text-[10px] tracking-[0.28em] uppercase font-[var(--font-body)] hover:bg-white/15 transition-colors"
+                            className="h-12 w-full inline-flex items-center justify-center gap-5 bg-white/10 border border-white/15 text-white text-[12px] tracking-[0.28em] uppercase font-[var(--font-body)] font-semibold hover:bg-white/15 transition-colors"
                             href="#order"
                           >
                             <span>Order Now</span>
@@ -592,7 +635,7 @@ function LandingPage() {
                             </span>
                           </a>
                           <a
-                            className="h-12 w-full inline-flex items-center justify-center gap-5 bg-white/10 border border-white/15 text-white text-[10px] tracking-[0.28em] uppercase font-[var(--font-body)] hover:bg-white/15 transition-colors"
+                            className="h-12 w-full inline-flex items-center justify-center gap-5 bg-white/10 border border-white/15 text-white text-[12px] tracking-[0.28em] uppercase font-[var(--font-body)] font-semibold hover:bg-white/15 transition-colors"
                             href="#learn"
                           >
                             <span>Learn More</span>
@@ -608,27 +651,31 @@ function LandingPage() {
                       </div>
                     </div>
 
-                    <div className="relative mt-12 lg:mt-0 overflow-hidden bg-[#0c2b43]">
+                    <div className="relative mt-12 lg:mt-0 overflow-hidden bg-[#7a1b5c] min-h-[520px] sm:min-h-[620px] lg:min-h-[82svh]">
                       <div
-                        className="absolute inset-0 bg-cover bg-center"
+                        className="absolute inset-0 bg-cover bg-right"
                         data-alt="Alessa holding book"
                         style={{ backgroundImage: `url('${connectedPortraitUrl}')` }}
                       />
-                      <div className="absolute inset-0 bg-gradient-to-r from-[#0c2b43]/15 via-transparent to-[#0c2b43]/10" />
-                      <div className="absolute inset-y-0 right-0 w-[58%] bg-white" />
-                      <div className="absolute top-10 right-12 text-[10px] tracking-[0.34em] uppercase text-black/60 font-[var(--font-body)]">
+                      <div className="absolute inset-0 bg-gradient-to-r from-[#7a1b5c]/15 via-transparent to-[#7a1b5c]/10" />
+                      <div className="absolute inset-y-0 right-0 w-[52%] sm:w-[56%] lg:w-[58%] bg-white" />
+                      <div className="absolute top-6 right-6 sm:top-8 sm:right-10 lg:top-10 lg:right-12 text-[11px] sm:text-[12px] lg:text-[13px] tracking-[0.34em] uppercase text-black/60 font-[var(--font-body)] font-semibold">
                         ALESSA AICHINGER
                       </div>
-                      <div className="absolute right-0 left-[42%] top-1/2 -translate-y-1/2 px-10">
+                      <div className="absolute right-0 left-[36%] sm:left-[40%] lg:left-[42%] top-1/2 -translate-y-1/2 px-4 sm:px-8 lg:px-10">
                         <div className="relative">
-                          <div className="h-[78px] bg-[#0c2b43] flex items-center justify-center">
-                            <div className="text-white text-[34px] tracking-[0.22em]">CONNEC</div>
-                            <div className="mx-2 h-[52px] w-px bg-white/70" />
-                            <div className="text-white text-[34px] tracking-[0.22em]">TED</div>
+                          <div className="h-[56px] sm:h-[66px] lg:h-[78px] bg-[#7a1b5c] flex items-center justify-center">
+                            <div className="text-white text-[22px] sm:text-[28px] lg:text-[34px] tracking-[0.18em] sm:tracking-[0.2em] lg:tracking-[0.22em]">
+                              CONNEC
+                            </div>
+                            <div className="mx-2 h-[36px] sm:h-[44px] lg:h-[52px] w-px bg-white/70" />
+                            <div className="text-white text-[22px] sm:text-[28px] lg:text-[34px] tracking-[0.18em] sm:tracking-[0.2em] lg:tracking-[0.22em]">
+                              TED
+                            </div>
                           </div>
                         </div>
                       </div>
-                      <div className="absolute bottom-10 right-12 text-[11px] tracking-[0.34em] uppercase text-black/45 font-[var(--font-body)]">
+                      <div className="absolute bottom-6 right-6 sm:bottom-8 sm:right-10 lg:bottom-10 lg:right-12 text-[11px] sm:text-[12px] lg:text-[13px] tracking-[0.34em] uppercase text-black/45 font-[var(--font-body)] font-semibold">
                         THE ART OF BUILDING A POWERFUL NETWORK
                       </div>
                     </div>
@@ -640,7 +687,7 @@ function LandingPage() {
                 <div className="max-w-[1500px] mx-auto px-6 lg:px-10 py-20 lg:py-24">
                   <div className="grid grid-cols-1 lg:grid-cols-[0.34fr_0.66fr] gap-14 lg:gap-16 items-center">
                     <div className="max-w-[420px]">
-                      <div className="text-[10px] tracking-[0.34em] uppercase text-[#2b4d67] font-[var(--font-body)]">
+                      <div className="text-[12px] tracking-[0.34em] uppercase text-[#b53d79] font-[var(--font-body)] font-semibold">
                         NETWORKING OPPORTUNITIES
                       </div>
                       <h2 className="mt-8 text-[54px] sm:text-[66px] leading-[0.95] tracking-[0.06em]">
@@ -652,7 +699,7 @@ function LandingPage() {
                       </h2>
                       <div className="mt-12">
                         <a
-                          className="inline-flex items-center justify-center gap-5 bg-[#0c2b43] text-white px-10 py-4 text-[11px] tracking-[0.26em] uppercase font-[var(--font-body)] hover:bg-[#10344f] transition-colors"
+                          className="inline-flex items-center justify-center gap-5 bg-[#7a1b5c] text-white px-10 py-4 text-[12px] tracking-[0.26em] uppercase font-[var(--font-body)] font-semibold hover:bg-[#8a2a68] transition-colors"
                           href="#connect"
                         >
                           <span>Learn More</span>
@@ -712,7 +759,7 @@ function LandingPage() {
                 <div className="max-w-[1500px] mx-auto px-6 lg:px-10 py-20 lg:py-24">
                   <div className="grid grid-cols-1 lg:grid-cols-[0.38fr_0.62fr] gap-14 lg:gap-16 items-center min-h-[640px] lg:min-h-[82svh]">
                     <div className="max-w-[460px]">
-                      <div className="text-[10px] tracking-[0.34em] uppercase text-[#2b4d67] font-[var(--font-body)]">
+                      <div className="text-[12px] tracking-[0.34em] uppercase text-[#b53d79] font-[var(--font-body)] font-semibold">
                         GIVING BACK TO COMMUNITIES
                       </div>
                       <h2 className="mt-8 text-[42px] sm:text-[66px] leading-[0.95] tracking-[0.04em] break-words hyphens-auto">
@@ -730,7 +777,7 @@ function LandingPage() {
 
                       <div className="mt-12">
                         <a
-                          className="inline-flex items-center justify-center gap-5 bg-[#0c2b43] text-white px-10 py-4 text-[11px] tracking-[0.26em] uppercase font-[var(--font-body)] hover:bg-[#10344f] transition-colors"
+                          className="inline-flex items-center justify-center gap-5 bg-[#7a1b5c] text-white px-10 py-4 text-[12px] tracking-[0.26em] uppercase font-[var(--font-body)] font-semibold hover:bg-[#8a2a68] transition-colors"
                           href="#connect"
                         >
                           <span>Learn More</span>
@@ -763,7 +810,7 @@ function LandingPage() {
 
                 <div className="relative max-w-[1500px] mx-auto px-6 lg:px-10 py-24 lg:py-28">
                   <div className="text-center">
-                    <div className="text-[10px] tracking-[0.34em] uppercase text-white/85 font-[var(--font-body)]">
+                    <div className="text-[12px] tracking-[0.34em] uppercase text-white/85 font-[var(--font-body)] font-semibold">
                       OVER 2,000+ CONNECTIONS
                     </div>
                     <h2 className="mt-8 text-[42px] sm:text-[56px] lg:text-[66px] leading-[0.92] tracking-[0.06em]">
@@ -807,7 +854,7 @@ function LandingPage() {
                 </div>
               </div>
 
-              <div id="newsletter" className="bg-[#0c2b43] text-white">
+              <div id="newsletter" className="bg-[#7a1b5c] text-white">
                 <div className="grid grid-cols-1 lg:grid-cols-[0.38fr_0.22fr_0.4fr] min-h-[100svh]">
                   <div className="relative min-h-[520px] lg:min-h-[100svh] overflow-hidden">
                     <div
@@ -827,7 +874,7 @@ function LandingPage() {
 
                   <div className="px-8 sm:px-12 lg:px-16 py-14 lg:py-16 flex items-center">
                     <div className="w-full max-w-[560px]">
-                      <div className="text-[10px] tracking-[0.34em] uppercase text-white/85 font-[var(--font-body)]">
+                      <div className="text-[12px] tracking-[0.34em] uppercase text-white/85 font-[var(--font-body)] font-semibold">
                         Subscribe Now
                       </div>
                       <h2 className="mt-8 text-[44px] sm:text-[54px] leading-[0.95] tracking-[0.06em]">
@@ -838,7 +885,7 @@ function LandingPage() {
                         NEWSLETTER
                       </h2>
 
-                      <p className="mt-10 text-[12px] leading-6 text-white/80 font-[var(--font-body)] max-w-[520px]">
+                      <p className="mt-10 text-[13px] leading-6 text-white/80 font-[var(--font-body)] max-w-[520px] font-semibold">
                         Stay ahead in the real estate game! Subscribe to our mailing list to receive the latest market
                         updates, exclusive alerts on new listings, upcoming events, foundation news, and more—directly to
                         your inbox. Don&apos;t miss out!
@@ -847,11 +894,11 @@ function LandingPage() {
                       <form className="mt-16" onSubmit={(event) => event.preventDefault()}>
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-10">
                           <label className="block">
-                            <div className="text-[10px] tracking-[0.18em] text-white/70 font-[var(--font-body)]">
+                            <div className="text-[12px] tracking-[0.18em] text-white/70 font-[var(--font-body)] font-semibold">
                               First name
                             </div>
                             <input
-                              className="mt-4 w-full bg-transparent border-b border-white/35 focus:border-white/70 outline-none pb-3 text-[13px] font-[var(--font-body)]"
+                              className="mt-4 w-full bg-transparent border-b border-white/35 focus:border-white/70 outline-none pb-3 text-[14px] font-[var(--font-body)] font-semibold"
                               type="text"
                               name="firstName"
                               autoComplete="given-name"
@@ -859,11 +906,11 @@ function LandingPage() {
                           </label>
 
                           <label className="block">
-                            <div className="text-[10px] tracking-[0.18em] text-white/70 font-[var(--font-body)]">
+                            <div className="text-[12px] tracking-[0.18em] text-white/70 font-[var(--font-body)] font-semibold">
                               Last name
                             </div>
                             <input
-                              className="mt-4 w-full bg-transparent border-b border-white/35 focus:border-white/70 outline-none pb-3 text-[13px] font-[var(--font-body)]"
+                              className="mt-4 w-full bg-transparent border-b border-white/35 focus:border-white/70 outline-none pb-3 text-[14px] font-[var(--font-body)] font-semibold"
                               type="text"
                               name="lastName"
                               autoComplete="family-name"
@@ -872,11 +919,11 @@ function LandingPage() {
                         </div>
 
                         <label className="block mt-10">
-                          <div className="text-[10px] tracking-[0.18em] text-white/70 font-[var(--font-body)]">
+                          <div className="text-[12px] tracking-[0.18em] text-white/70 font-[var(--font-body)] font-semibold">
                             Email *
                           </div>
                           <input
-                            className="mt-4 w-full bg-transparent border-b border-white/35 focus:border-white/70 outline-none pb-3 text-[13px] font-[var(--font-body)]"
+                            className="mt-4 w-full bg-transparent border-b border-white/35 focus:border-white/70 outline-none pb-3 text-[14px] font-[var(--font-body)] font-semibold"
                             type="email"
                             name="email"
                             autoComplete="email"
@@ -886,7 +933,7 @@ function LandingPage() {
 
                         <button
                           type="submit"
-                          className="mt-12 w-full h-12 bg-[#5f8197] text-white text-[12px] font-[var(--font-body)] hover:bg-[#6a8aa0] transition-colors"
+                          className="mt-12 w-full h-12 bg-[#b53d79] text-white text-[13px] font-[var(--font-body)] font-semibold hover:bg-[#c04a86] transition-colors"
                         >
                           Submit
                         </button>
@@ -896,20 +943,18 @@ function LandingPage() {
                 </div>
               </div>
 
-              <footer id="footer" className="relative bg-[#0c2b43] text-white overflow-hidden min-h-[100svh]">
+              <footer id="footer" className="relative bg-[#7a1b5c] text-white overflow-hidden min-h-[100svh]">
                 <div className="relative max-w-[1500px] mx-auto px-6 lg:px-10 pt-14 lg:pt-16 pb-28 lg:pb-36">
                   <div className="grid grid-cols-1 lg:grid-cols-[0.32fr_0.36fr_0.32fr] gap-12 lg:gap-16">
-                    <div className="text-[10px] tracking-[0.16em] uppercase text-white/90 font-[var(--font-body)] space-y-7">
-                      <div>
-                        <div>155 WATER STREET</div>
-                        <div>BROOKLYN, NY, 11201</div>
-                      </div>
-                      <div>347.385.1105</div>
+                    <div className="text-[12px] tracking-[0.16em] uppercase text-white/90 font-[var(--font-body)] font-semibold space-y-4">
+                      <div>Licensed Real Estate Salesperson</div>
+                      <div>New York City</div>
+                      <div>(332) 201-8444</div>
                       <div>ALESSA@SERHANT.COM</div>
-                      <div>LIC#: 10301222501</div>
+                      <div>LIC#: 10401333915</div>
                     </div>
 
-                    <div className="text-[10px] tracking-[0.16em] uppercase text-white/90 font-[var(--font-body)]">
+                    <div className="text-[12px] tracking-[0.16em] uppercase text-white/90 font-[var(--font-body)] font-semibold">
                       <div className="space-y-5">
                         <a className="block hover:text-white transition-colors" href="#home">
                           Home
@@ -954,7 +999,7 @@ function LandingPage() {
                       </div>
                     </div>
 
-                    <div className="text-[10px] tracking-[0.16em] uppercase text-white/90 font-[var(--font-body)]">
+                    <div className="text-[12px] tracking-[0.16em] uppercase text-white/90 font-[var(--font-body)] font-semibold">
                       <div className="space-y-5">
                         <a className="block hover:text-white transition-colors" href="#privacy">
                           Privacy Policy
@@ -965,7 +1010,7 @@ function LandingPage() {
                         <a className="block hover:text-white transition-colors" href="#terms">
                           Terms &amp; Conditions
                         </a>
-                        <div className="pt-6 text-white/80 normal-case tracking-[0.08em] text-[10px]">
+                        <div className="pt-6 text-white/80 normal-case tracking-[0.08em] text-[12px] font-semibold">
                           © 2025 By Alessa Aichinger
                         </div>
                         <a className="pt-4 inline-block underline underline-offset-4 hover:text-white transition-colors" href="#design">
@@ -975,55 +1020,57 @@ function LandingPage() {
                     </div>
                   </div>
 
-                  <div className="relative mt-20 lg:mt-24 min-h-[420px] lg:min-h-[520px]">
-                    <div className="lg:absolute lg:left-0 lg:top-0 max-w-[720px]">
-                      <div className="text-[30px] sm:text-[34px] lg:text-[40px] leading-[0.98] tracking-[0.08em]">
-                        INSTAGRAM · LINKEDIN
-                        <br />
-                        X · FACEBOOK · YOUTUBE
-                        <br />
-                        TIKTOK
+                  <div className="mt-20 lg:mt-24 grid grid-cols-1 gap-12 lg:gap-16 items-start">
+                    <div className="space-y-10">
+                      <div className="flex flex-wrap items-center gap-5">
+                        <a
+                          className="h-12 w-12 rounded-full border border-white/40 text-white/85 hover:text-white hover:border-white/70 transition-colors inline-flex items-center justify-center"
+                          href="https://www.instagram.com/realestate_withalessa"
+                          rel="noreferrer"
+                          target="_blank"
+                          aria-label="Instagram"
+                        >
+                          <svg viewBox="0 0 24 24" className="h-5 w-5" fill="currentColor" aria-hidden>
+                            <path d="M7 3h10a4 4 0 0 1 4 4v10a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V7a4 4 0 0 1 4-4Zm10 2H7a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2Zm-5 3.5A5.5 5.5 0 1 1 6.5 14 5.5 5.5 0 0 1 12 8.5Zm0 2A3.5 3.5 0 1 0 15.5 14 3.5 3.5 0 0 0 12 10.5Zm5.25-3.75a1.25 1.25 0 1 1-1.25 1.25 1.25 1.25 0 0 1 1.25-1.25Z" />
+                          </svg>
+                        </a>
+                        <a
+                          className="h-12 w-12 rounded-full border border-white/40 text-white/85 hover:text-white hover:border-white/70 transition-colors inline-flex items-center justify-center"
+                          href="https://www.facebook.com/realestatewithalessa"
+                          rel="noreferrer"
+                          target="_blank"
+                          aria-label="Facebook"
+                        >
+                          <svg viewBox="0 0 24 24" className="h-5 w-5" fill="currentColor" aria-hidden>
+                            <path d="M13.5 9H16V6h-2.5C11.57 6 10 7.57 10 9.5V12H8v3h2v6h3v-6h2.5l.5-3H13v-2.5c0-.55.45-1.5 1.5-1.5Z" />
+                          </svg>
+                        </a>
+                        <a
+                          className="h-12 w-12 rounded-full border border-white/40 text-white/85 hover:text-white hover:border-white/70 transition-colors inline-flex items-center justify-center"
+                          href="https://www.linkedin.com/in/alessaaichinger/"
+                          rel="noreferrer"
+                          target="_blank"
+                          aria-label="LinkedIn"
+                        >
+                          <svg viewBox="0 0 24 24" className="h-5 w-5" fill="currentColor" aria-hidden>
+                            <path d="M6.94 8.5H4V20h2.94V8.5Zm-1.47-4A1.72 1.72 0 1 0 7.2 6.22 1.72 1.72 0 0 0 5.47 4.5ZM20 13.1c0-3.1-1.65-4.55-3.85-4.55A3.36 3.36 0 0 0 13 10.16V8.5H10.06V20H13v-6.08c0-1.6.3-3.15 2.28-3.15 1.95 0 1.98 1.83 1.98 3.25V20H20Z" />
+                          </svg>
+                        </a>
                       </div>
-                    </div>
 
-                    <div className="mt-14 lg:mt-0 lg:absolute lg:right-0 lg:bottom-10 flex flex-col items-end gap-8">
-                      <div className="text-[40px] sm:text-[46px] lg:text-[52px] tracking-[0.14em] text-white/95">
-                        SERHANT.
+                      <div className="max-w-[620px] text-[11px] leading-5 text-white/70 font-[var(--font-body)] font-semibold">
+                        Alessa Aichinger is committed to providing an accessible website. If you have difficulty accessing
+                        content, have difficulty viewing a file on the website, or notice any accessibility problems,
+                        please contact us at 201.500.5431 to specify the nature of the accessibility issue and any
+                        assistive technology you use. We strive to provide the content you need in the format you require.
+                        <div className="mt-4">Copyright © 2024 Alessa Aichinger. All Rights Reserved.</div>
                       </div>
-                      <div className="flex items-end gap-9">
-                        <div className="flex flex-col items-center gap-2">
-                          <div className="h-14 w-14 border border-white/60 flex items-center justify-center text-[10px] tracking-[0.18em]">
-                            EH
-                          </div>
-                          <div className="text-[8px] tracking-[0.22em] text-white/70 font-[var(--font-body)] uppercase text-center">
-                            Equal Housing
-                            <br />
-                            Opportunity
-                          </div>
-                        </div>
-                        <div className="flex flex-col items-center gap-2">
-                          <div className="h-14 w-14 border border-white/60 flex items-center justify-center text-[20px] tracking-[0.12em]">
-                            R
-                          </div>
-                          <div className="text-[8px] tracking-[0.22em] text-white/70 font-[var(--font-body)] uppercase text-center">
-                            Realtor
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="mt-14 lg:mt-0 lg:absolute lg:left-0 lg:bottom-0 max-w-[620px] text-[9px] leading-5 text-white/70 font-[var(--font-body)]">
-                      Alessa Aichinger is committed to providing an accessible website. If you have difficulty accessing
-                      content, have difficulty viewing a file on the website, or notice any accessibility problems, please
-                      contact us at 201.500.5431 to specify the nature of the accessibility issue and any assistive
-                      technology you use. We strive to provide the content you need in the format you require.
-                      <div className="mt-4">Copyright © 2024 Alessa Aichinger. All Rights Reserved.</div>
                     </div>
                   </div>
                 </div>
 
-                <div className="pointer-events-none absolute left-0 right-0 bottom-[-140px] text-center text-white/[0.22] leading-none tracking-[0.14em]">
-                  <div className="text-[11vw] sm:text-[14vw] lg:text-[16vw] whitespace-nowrap">ALESSA AICHINGER</div>
+                <div className="pointer-events-none absolute left-0 right-0 bottom-0 text-center text-white/[0.22] leading-none tracking-[0.14em] px-4">
+                  <div className="text-[10vw] sm:text-[12vw] lg:text-[14vw] whitespace-normal break-words">ALESSA AICHINGER</div>
                 </div>
               </footer>
             </div>
