@@ -332,7 +332,6 @@ function LandingPage() {
             <video
               className="absolute inset-0 w-full h-full object-cover scale-105"
               src={heroVideoUrl}
-              poster="/Alessa-placeholder-image.jpg"
               autoPlay
               muted
               loop
@@ -358,7 +357,6 @@ function LandingPage() {
                 <video
                   className="absolute inset-0 w-full h-full object-cover"
                   src={heroVideoUrl}
-                  poster="/Alessa-placeholder-image.jpg"
                   autoPlay
                   muted
                   loop
