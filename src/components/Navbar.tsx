@@ -12,7 +12,6 @@ const navItems = [
   { label: "Let's Connect", href: '#connect' },
   { label: 'Services', href: '#services' },
   { label: 'Construction', href: '#construction' },
-  { label: 'My Book', href: '#book' },
   { label: 'Events', href: '#events' },
   { label: 'NYREM', href: '#nyrem' },
 ]
@@ -140,7 +139,7 @@ function Navbar({ mode = 'solid' }: NavbarProps) {
                 <div className="hidden sm:block text-[28px]">ALESSA AICHINGER</div>
               </div>
               <div className="hidden sm:block mt-2 text-[12px] tracking-[0.34em] uppercase text-white/70 font-[var(--font-body)] font-semibold">
-                Redefining the Art of Real Estate
+                International Luxury Real Estate
               </div>
             </Link>
 
@@ -206,7 +205,6 @@ function Navbar({ mode = 'solid' }: NavbarProps) {
                   { label: "LET'S CONNECT", href: '#connect' },
                   { label: 'SERVICES', href: '#services', chevron: true },
                   { label: 'CONSTRUCTION', href: '#construction' },
-                  { label: 'MY BOOK', href: '#book' },
                   { label: 'EVENTS', href: '#events' },
                   { label: 'NYREM', href: '#nyrem', chevron: true },
                 ].map((item) => (

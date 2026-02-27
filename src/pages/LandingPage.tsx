@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { type SyntheticEvent, useEffect, useMemo, useRef, useState } from 'react'
 import Navbar from '../components/Navbar'
 
 type FeaturedProperty = {
@@ -21,7 +21,6 @@ function LandingPage() {
   const aboutInlineImageUrl = '/Alessa2.jpg'
   const servicesImageUrl = '/Alessa3.jpg'
   const servicesSkylineUrl = '/Alessa4.jpg'
-  const connectedPortraitUrl = '/Alessa5.jpg'
   const newsletterLeftImageUrl = '/Alessa6.jpg'
   const newsletterCenterImageUrl = '/Alessa7.jpg'
   const affiliatesBackgroundUrl = '/Alessa-placeholder-image.jpg'
@@ -54,7 +53,6 @@ function LandingPage() {
     ],
     [],
   )
-  const claFoundationImageUrl = '/Alessa-placeholder-image.jpg'
   const featuredVideos = useMemo<FeaturedVideo[]>(
     () => [
       {
@@ -62,6 +60,14 @@ function LandingPage() {
         label: 'ALESSA INSTA',
         posterUrl: '/Alessa-placeholder-image.jpg',
       },
+    ],
+    [],
+  )
+  const heroVideoSegments = useMemo(
+    () => [
+      { id: 'hero-segment-1', startTime: 0 },
+      { id: 'hero-segment-2', startTime: 12 },
+      { id: 'hero-segment-3', startTime: 24 },
     ],
     [],
   )
@@ -190,12 +196,19 @@ function LandingPage() {
     }
     el.scrollBy({ left: Math.max(240, Math.round(el.clientWidth * 0.72)), behavior: 'smooth' })
   }
+  const onFeaturedVideoLoaded = (event: SyntheticEvent<HTMLVideoElement>, startTime: number) => {
+    const el = event.currentTarget
+    if (Number.isFinite(startTime)) {
+      el.currentTime = startTime
+    }
+    void el.play()
+  }
 
   return (
-    <div className="curtis-theme bg-black text-white font-display min-h-screen">
+    <div className="alessa-theme bg-black text-white font-display min-h-screen">
       <main>
-        <section id="home" className="relative w-full h-[100svh] min-h-[720px] overflow-hidden">
-          <div className="absolute inset-0">
+        <section id="home" className="relative w-full">
+          <div className="relative w-full h-[100svh] min-h-[720px] overflow-hidden hidden md:block">
             <video
               className="absolute inset-0 w-full h-full object-cover scale-105"
               src={heroVideoUrl}
@@ -206,19 +219,45 @@ function LandingPage() {
             />
             <div className="absolute inset-0 bg-black/35" />
             <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/10 to-black/35" />
+            <Navbar mode="overlay" />
+
+            <button
+              className="fixed right-7 bottom-7 z-[60] h-14 w-14 rounded-full bg-[#b53d79] shadow-[0_10px_30px_rgba(0,0,0,0.35)] flex items-center justify-center hover:bg-[#c04a86] transition-colors"
+              type="button"
+              aria-label="Chat"
+            >
+              <span className="material-symbols-outlined text-white text-[26px] leading-none">mode_comment</span>
+            </button>
           </div>
 
-          <Navbar mode="overlay" />
+          <div className="relative w-full h-[100svh] min-h-[720px] overflow-hidden grid grid-rows-3 md:hidden">
+            {heroVideoSegments.map((segment) => (
+              <div key={segment.id} className="relative overflow-hidden">
+                <video
+                  className="absolute inset-0 w-full h-full object-cover"
+                  src={heroVideoUrl}
+                  autoPlay
+                  muted
+                  loop
+                  playsInline
+                  onLoadedMetadata={(event) => onFeaturedVideoLoaded(event, segment.startTime)}
+                />
+                <div className="absolute inset-0 bg-black/35" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/10 to-black/35" />
+              </div>
+            ))}
+            <Navbar mode="overlay" />
 
-          <button
-            className="fixed right-7 bottom-7 z-[60] h-14 w-14 rounded-full bg-[#b53d79] shadow-[0_10px_30px_rgba(0,0,0,0.35)] flex items-center justify-center hover:bg-[#c04a86] transition-colors"
-            type="button"
-            aria-label="Chat"
-          >
-            <span className="material-symbols-outlined text-white text-[26px] leading-none">mode_comment</span>
-          </button>
+            <button
+              className="fixed right-7 bottom-7 z-[60] h-14 w-14 rounded-full bg-[#b53d79] shadow-[0_10px_30px_rgba(0,0,0,0.35)] flex items-center justify-center hover:bg-[#c04a86] transition-colors"
+              type="button"
+              aria-label="Chat"
+            >
+              <span className="material-symbols-outlined text-white text-[26px] leading-none">mode_comment</span>
+            </button>
+          </div>
 
-          <div className="absolute left-0 right-0 bottom-0 z-20 bg-[#7a1b5c]/70 backdrop-blur-sm">
+          <div className="bg-[#7a1b5c]/70 backdrop-blur-sm">
             <div className="max-w-[1500px] mx-auto px-6 lg:px-10 py-10">
               <div className="grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-0 items-start">
                 <div className="text-center md:text-left">
@@ -292,7 +331,7 @@ function LandingPage() {
                 <p className="mt-6 text-[13px] leading-6 text-[#3a3a3a] font-[var(--font-body)] max-w-[420px]">
                   Austrian-born Alessa Aichinger is a star real estate broker who brings local expertise, international
                   perspective, and first-hand investment experience to every deal. She is fluent in four languages and is
-                  known for her honesty, creativity, and communication skills. She and her business partner, Curtis, have
+                  known for her honesty, creativity, and communication skills. She and her business partner have
                   done over $100M in sales, encompassing commercial transactions and luxury properties throughout Manhattan
                   and Brooklyn.
                 </p>
@@ -594,95 +633,6 @@ function LandingPage() {
                 </div>
               </div>
 
-              <div id="connected" className="bg-[#7a1b5c] text-white">
-                <div className="max-w-[1500px] mx-auto px-6 lg:px-10 py-14 lg:py-16">
-                  <div className="grid grid-cols-1 lg:grid-cols-[0.42fr_0.58fr] min-h-[640px] lg:min-h-[82svh]">
-                    <div className="relative flex items-center">
-                      <div className="max-w-[420px]">
-                        <h2 className="text-[38px] sm:text-[46px] leading-[1.03] tracking-[0.06em]">
-                          TOP OF THE
-                          <br />
-                          CHARTS ON
-                          <br />
-                          AMAZON
-                        </h2>
-
-                        <div className="mt-7 text-[16px] sm:text-[17px] tracking-[0.08em] leading-[1.25] text-white/90">
-                          CONNECTED:
-                          <br />
-                          THE ART OF BUILDING A
-                          <br />
-                          POWERFUL NETWORK
-                        </div>
-
-                        <p className="mt-8 text-[13px] leading-6 text-white/80 font-[var(--font-body)]">
-                          If you want to unlock the full potential of your connections and transform them into a six-figure
-                          business, Connected is your ultimate guide.
-                        </p>
-
-                        <p className="mt-6 text-[13px] leading-6 text-white/80 font-[var(--font-body)]">
-                          Get your copy today for $24.99 and start building your path to success!
-                        </p>
-
-                        <div className="mt-12 flex flex-col gap-4 w-full max-w-[240px]">
-                          <a
-                            className="h-12 w-full inline-flex items-center justify-center gap-5 bg-white/10 border border-white/15 text-white text-[12px] tracking-[0.28em] uppercase font-[var(--font-body)] font-semibold hover:bg-white/15 transition-colors"
-                            href="#order"
-                          >
-                            <span>Order Now</span>
-                            <span aria-hidden className="text-[14px] leading-none">
-                              +
-                            </span>
-                          </a>
-                          <a
-                            className="h-12 w-full inline-flex items-center justify-center gap-5 bg-white/10 border border-white/15 text-white text-[12px] tracking-[0.28em] uppercase font-[var(--font-body)] font-semibold hover:bg-white/15 transition-colors"
-                            href="#learn"
-                          >
-                            <span>Learn More</span>
-                            <span aria-hidden className="text-[14px] leading-none">
-                              +
-                            </span>
-                          </a>
-                        </div>
-                      </div>
-
-                      <div className="hidden lg:block pointer-events-none absolute left-[6%] bottom-[-28px] text-[96px] tracking-[0.16em] text-white/[0.06] leading-none">
-                        AICHINGER
-                      </div>
-                    </div>
-
-                    <div className="relative mt-12 lg:mt-0 overflow-hidden bg-[#7a1b5c] min-h-[520px] sm:min-h-[620px] lg:min-h-[82svh]">
-                      <div
-                        className="absolute inset-0 bg-cover bg-right"
-                        data-alt="Alessa holding book"
-                        style={{ backgroundImage: `url('${connectedPortraitUrl}')` }}
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-r from-[#7a1b5c]/15 via-transparent to-[#7a1b5c]/10" />
-                      <div className="absolute inset-y-0 right-0 w-[52%] sm:w-[56%] lg:w-[58%] bg-white" />
-                      <div className="absolute top-6 right-6 sm:top-8 sm:right-10 lg:top-10 lg:right-12 text-[11px] sm:text-[12px] lg:text-[13px] tracking-[0.34em] uppercase text-black/60 font-[var(--font-body)] font-semibold">
-                        ALESSA AICHINGER
-                      </div>
-                      <div className="absolute right-0 left-[36%] sm:left-[40%] lg:left-[42%] top-1/2 -translate-y-1/2 px-4 sm:px-8 lg:px-10">
-                        <div className="relative">
-                          <div className="h-[56px] sm:h-[66px] lg:h-[78px] bg-[#7a1b5c] flex items-center justify-center">
-                            <div className="text-white text-[22px] sm:text-[28px] lg:text-[34px] tracking-[0.18em] sm:tracking-[0.2em] lg:tracking-[0.22em]">
-                              CONNEC
-                            </div>
-                            <div className="mx-2 h-[36px] sm:h-[44px] lg:h-[52px] w-px bg-white/70" />
-                            <div className="text-white text-[22px] sm:text-[28px] lg:text-[34px] tracking-[0.18em] sm:tracking-[0.2em] lg:tracking-[0.22em]">
-                              TED
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="absolute bottom-6 right-6 sm:bottom-8 sm:right-10 lg:bottom-10 lg:right-12 text-[11px] sm:text-[12px] lg:text-[13px] tracking-[0.34em] uppercase text-black/45 font-[var(--font-body)] font-semibold">
-                        THE ART OF BUILDING A POWERFUL NETWORK
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
               <div id="opportunities" className="bg-[#f6f6f4] text-[#111]">
                 <div className="max-w-[1500px] mx-auto px-6 lg:px-10 py-20 lg:py-24">
                   <div className="grid grid-cols-1 lg:grid-cols-[0.34fr_0.66fr] gap-14 lg:gap-16 items-center">
@@ -691,11 +641,7 @@ function LandingPage() {
                         NETWORKING OPPORTUNITIES
                       </div>
                       <h2 className="mt-8 text-[54px] sm:text-[66px] leading-[0.95] tracking-[0.06em]">
-                        CONNECT.
-                        <br />
-                        LEARN.
-                        <br />
-                        ACTIVATE.
+                        GALLERY
                       </h2>
                       <div className="mt-12">
                         <a
@@ -750,50 +696,6 @@ function LandingPage() {
                           →
                         </span>
                       </button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div id="cla" className="bg-[#f6f6f4] text-[#111]">
-                <div className="max-w-[1500px] mx-auto px-6 lg:px-10 py-20 lg:py-24">
-                  <div className="grid grid-cols-1 lg:grid-cols-[0.38fr_0.62fr] gap-14 lg:gap-16 items-center min-h-[640px] lg:min-h-[82svh]">
-                    <div className="max-w-[460px]">
-                      <div className="text-[12px] tracking-[0.34em] uppercase text-[#b53d79] font-[var(--font-body)] font-semibold">
-                        GIVING BACK TO COMMUNITIES
-                      </div>
-                      <h2 className="mt-8 text-[42px] sm:text-[66px] leading-[0.95] tracking-[0.04em] break-words hyphens-auto">
-                        THE CLA
-                        <br />
-                        FOUNDATION
-                      </h2>
-
-                      <p className="mt-10 text-[13px] leading-6 text-[#3a3a3a] font-[var(--font-body)]">
-                        At CLA Foundation, we&apos;re dedicated to empowering individuals of all ages to connect, learn, and
-                        activate their potential. Whether you&apos;re looking to build confidence, make meaningful connections,
-                        or access opportunities, the CLA Foundation is here to support your journey. Discover how we can
-                        help you unlock new possibilities.
-                      </p>
-
-                      <div className="mt-12">
-                        <a
-                          className="inline-flex items-center justify-center gap-5 bg-[#7a1b5c] text-white px-10 py-4 text-[12px] tracking-[0.26em] uppercase font-[var(--font-body)] font-semibold hover:bg-[#8a2a68] transition-colors"
-                          href="#connect"
-                        >
-                          <span>Learn More</span>
-                          <span aria-hidden className="text-[14px] leading-none">
-                            +
-                          </span>
-                        </a>
-                      </div>
-                    </div>
-
-                    <div className="relative overflow-hidden min-h-[520px] lg:min-h-[82svh]">
-                      <div
-                        className="absolute inset-0 bg-cover bg-center"
-                        data-alt="CLA Foundation"
-                        style={{ backgroundImage: `url('${claFoundationImageUrl}')` }}
-                      />
                     </div>
                   </div>
                 </div>
@@ -973,9 +875,6 @@ function LandingPage() {
                         <a className="block hover:text-white transition-colors" href="#construction">
                           Construction
                         </a>
-                        <a className="block hover:text-white transition-colors" href="#connected">
-                          My Book
-                        </a>
                         <a className="block hover:text-white transition-colors" href="#events">
                           Events
                         </a>
@@ -987,9 +886,6 @@ function LandingPage() {
                             keyboard_arrow_down
                           </span>
                         </div>
-                        <a className="block hover:text-white transition-colors" href="#cla">
-                          CLA Foundation
-                        </a>
                         <a className="block hover:text-white transition-colors" href="#about">
                           About Alessa
                         </a>
