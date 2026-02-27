@@ -1,4 +1,14 @@
-import { type SyntheticEvent, useEffect, useMemo, useRef, useState } from 'react'
+import {
+  type CSSProperties,
+  type HTMLAttributes,
+  type MouseEvent,
+  type ReactNode,
+  type SyntheticEvent,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react'
 import Navbar from '../components/Navbar'
 
 type FeaturedProperty = {
@@ -13,6 +23,50 @@ type FeaturedVideo = {
   id: string
   label: string
   posterUrl: string
+}
+
+type LazyBackgroundProps = HTMLAttributes<HTMLDivElement> & {
+  src: string
+  eager?: boolean
+  children?: ReactNode
+}
+
+function LazyBackground({ src, eager = false, style, children, ...rest }: LazyBackgroundProps) {
+  const elementRef = useRef<HTMLDivElement | null>(null)
+  const [isVisible, setIsVisible] = useState(() => eager || typeof IntersectionObserver === 'undefined')
+
+  useEffect(() => {
+    if (isVisible) {
+      return
+    }
+    const el = elementRef.current
+    if (!el) {
+      return
+    }
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries.some((entry) => entry.isIntersecting)) {
+          setIsVisible(true)
+          observer.disconnect()
+        }
+      },
+      { rootMargin: '300px 0px' },
+    )
+    observer.observe(el)
+    return () => {
+      observer.disconnect()
+    }
+  }, [isVisible])
+
+  const mergedStyle: CSSProperties | undefined = isVisible
+    ? { ...style, backgroundImage: `url('${src}')` }
+    : style
+
+  return (
+    <div ref={elementRef} style={mergedStyle} {...rest}>
+      {children}
+    </div>
+  )
 }
 
 function LandingPage() {
@@ -66,8 +120,8 @@ function LandingPage() {
   const heroVideoSegments = useMemo(
     () => [
       { id: 'hero-segment-1', startTime: 0 },
-      { id: 'hero-segment-2', startTime: 12 },
-      { id: 'hero-segment-3', startTime: 24 },
+      { id: 'hero-segment-2', startTime: 20 },
+      { id: 'hero-segment-3', startTime: 40 },
     ],
     [],
   )
@@ -78,42 +132,42 @@ function LandingPage() {
         address: '281 PARK AVE SOUTH',
         details: 'Commercial · 42,500 Sq Ft · SERHANT. Signature',
         price: 'Price Upon Request',
-        imageUrl: 'https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=2600&q=80',
+        imageUrl: 'https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=1400&q=70',
       },
       {
         id: '56-north-moore-st',
         address: '56 NORTH MOORE ST',
         details: 'Commercial · SERHANT. Signature',
         price: '$75,000,000',
-        imageUrl: 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=2600&q=80',
+        imageUrl: 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=1400&q=70',
       },
       {
         id: '432-park-avenue-69',
         address: '432 PARK AVENUE 69',
         details: '5 Beds · 6 Full Baths · 8,040 Sq Ft · SERHANT. Signature',
         price: '$52,000,000',
-        imageUrl: 'https://images.unsplash.com/photo-1512918728675-ed5a9ecdebfd?auto=format&fit=crop&w=2600&q=80',
+        imageUrl: 'https://images.unsplash.com/photo-1512918728675-ed5a9ecdebfd?auto=format&fit=crop&w=1400&q=70',
       },
       {
         id: '35-east-62nd-street',
         address: '35 E 62ND STREET',
         details: '0 Beds · 5 Full Baths · 25,000 Sq Ft · Listing Courtesy Melissa Karen Post with Serhant',
         price: '$49,900,000',
-        imageUrl: 'https://images.unsplash.com/photo-1501183638710-841dd1904471?auto=format&fit=crop&w=2600&q=80',
+        imageUrl: 'https://images.unsplash.com/photo-1501183638710-841dd1904471?auto=format&fit=crop&w=1400&q=70',
       },
       {
         id: '125-e-65th-street',
         address: '125 E 65TH STREET',
         details: '6 Beds · 7 Full Baths · 14,346 Sq Ft · Listing Courtesy Marc Riedel with Serhant',
         price: '$45,500,000',
-        imageUrl: 'https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=2600&q=80',
+        imageUrl: 'https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=1400&q=70',
       },
       {
         id: '20-greene-st-ph',
         address: '20 GREENE STREET PH',
         details: '3 Beds · 4 Full Baths · 6,814 Sq Ft',
         price: '$35,950,000',
-        imageUrl: 'https://images.unsplash.com/photo-1502005229762-cf1b2da7c5d6?auto=format&fit=crop&w=2600&q=80',
+        imageUrl: 'https://images.unsplash.com/photo-1502005229762-cf1b2da7c5d6?auto=format&fit=crop&w=1400&q=70',
       },
     ],
     [],
@@ -121,7 +175,9 @@ function LandingPage() {
 
   const featuredRowHeightPx = 54
   const featuredScrollRef = useRef<HTMLDivElement | null>(null)
+  const afterSectionsRef = useRef<HTMLDivElement | null>(null)
   const networkingGalleryRef = useRef<HTMLDivElement | null>(null)
+  const [afterSectionsHeight, setAfterSectionsHeight] = useState(0)
   const [featuredScrollProgress, setFeaturedScrollProgress] = useState(0)
   const [featuredViewportHeight, setFeaturedViewportHeight] = useState(() => {
     if (typeof window === 'undefined') {
@@ -168,7 +224,41 @@ function LandingPage() {
     }
   }, [])
 
-  const featuredTotalSteps = featuredProperties.length + 9
+  useEffect(() => {
+    const el = afterSectionsRef.current
+    if (!el) {
+      return
+    }
+    let rafId = 0
+    const schedule = () => {
+      if (rafId) {
+        return
+      }
+      rafId = window.requestAnimationFrame(() => {
+        rafId = 0
+        setAfterSectionsHeight(el.offsetHeight)
+      })
+    }
+    schedule()
+    if (typeof ResizeObserver === 'undefined') {
+      window.addEventListener('resize', schedule)
+      return () => {
+        if (rafId) {
+          window.cancelAnimationFrame(rafId)
+        }
+        window.removeEventListener('resize', schedule)
+      }
+    }
+    const observer = new ResizeObserver(schedule)
+    observer.observe(el)
+    return () => {
+      observer.disconnect()
+      if (rafId) {
+        window.cancelAnimationFrame(rafId)
+      }
+    }
+  }, [])
+
   const featuredStepHeight = Math.max(1, featuredViewportHeight || 1)
   const featuredT = featuredScrollProgress / featuredStepHeight
   const featuredActiveIndex = Math.min(featuredProperties.length - 1, Math.floor(featuredT))
@@ -182,6 +272,7 @@ function LandingPage() {
   const featuredActiveTranslateY =
     featuredActiveIndex === 0 ? 0 : Math.max(0, (1 - featuredStepProgress) * featuredActiveEntryDelta)
   const featuredServicesTopPx = featuredProperties.length * featuredStepHeight
+  const featuredTotalHeightPx = Math.max(featuredServicesTopPx + afterSectionsHeight, featuredStepHeight)
   const onNetworkingPrev = () => {
     const el = networkingGalleryRef.current
     if (!el) {
@@ -203,6 +294,35 @@ function LandingPage() {
     }
     void el.play()
   }
+  const onAnchorScroll = (event: SyntheticEvent<HTMLAnchorElement>, href: string) => {
+    if (!href.startsWith('#')) {
+      return
+    }
+    event.preventDefault()
+    const targetId = href.slice(1)
+    const targetEl = document.getElementById(targetId)
+    if (!targetEl) {
+      return
+    }
+    const targetTop = targetEl.getBoundingClientRect().top + window.scrollY
+    window.history.replaceState(null, '', href)
+    window.scrollTo({ top: targetTop, behavior: 'smooth' })
+  }
+  const onContactScroll = (event: MouseEvent<HTMLElement>, href: string) => {
+    if (!href.startsWith('#')) {
+      return
+    }
+    event.preventDefault()
+    event.stopPropagation()
+    const targetId = href.slice(1)
+    const targetEl = document.getElementById(targetId)
+    if (!targetEl) {
+      return
+    }
+    const targetTop = targetEl.getBoundingClientRect().top + window.scrollY
+    window.history.replaceState(null, '', href)
+    window.scrollTo({ top: targetTop, behavior: 'smooth' })
+  }
 
   return (
     <div className="alessa-theme bg-black text-white font-display min-h-screen">
@@ -212,9 +332,11 @@ function LandingPage() {
             <video
               className="absolute inset-0 w-full h-full object-cover scale-105"
               src={heroVideoUrl}
+              poster="/Alessa-placeholder-image.jpg"
               autoPlay
               muted
               loop
+              preload="metadata"
               playsInline
             />
             <div className="absolute inset-0 bg-black/35" />
@@ -236,9 +358,11 @@ function LandingPage() {
                 <video
                   className="absolute inset-0 w-full h-full object-cover"
                   src={heroVideoUrl}
+                  poster="/Alessa-placeholder-image.jpg"
                   autoPlay
                   muted
                   loop
+                  preload="metadata"
                   playsInline
                   onLoadedMetadata={(event) => onFeaturedVideoLoaded(event, segment.startTime)}
                 />
@@ -305,10 +429,10 @@ function LandingPage() {
         <section id="about" className="bg-[#f6f6f4] text-[#111]">
           <div className="grid grid-cols-1 lg:grid-cols-[1.05fr_1fr_0.95fr]">
             <div className="relative min-h-[520px] lg:min-h-[640px]">
-              <div
+              <LazyBackground
                 className="absolute inset-0 bg-cover bg-center"
                 data-alt="Alessa seated in a bright, modern interior"
-                style={{ backgroundImage: `url('${aboutLeftImageUrl}')` }}
+                src={aboutLeftImageUrl}
               />
               <div className="absolute inset-0 bg-gradient-to-r from-black/15 via-transparent to-transparent lg:from-black/25" />
             </div>
@@ -345,10 +469,10 @@ function LandingPage() {
                 </div>
 
                 <div className="mt-12">
-                  <div
+                  <LazyBackground
                     className="w-full max-w-[520px] aspect-[16/9] bg-cover bg-top shadow-[0_24px_55px_rgba(0,0,0,0.25)]"
                     data-alt="Alessa with clients by the pool"
-                    style={{ backgroundImage: `url('${aboutInlineImageUrl}')` }}
+                    src={aboutInlineImageUrl}
                   />
                 </div>
               </div>
@@ -448,26 +572,26 @@ function LandingPage() {
             ref={featuredScrollRef}
             className="relative"
             style={{
-              height: `${featuredTotalSteps * 100}vh`,
+              height: `${featuredTotalHeightPx}px`,
             }}
           >
             <div className="sticky top-0 h-[100svh] overflow-hidden relative">
               <div className="absolute inset-0 bg-[#f6f6f4]" />
-              <div
+              <LazyBackground
                 className="absolute inset-x-0 bottom-0 bg-cover bg-center"
                 data-alt="Featured property"
+                src={featuredProperties[featuredBaseImageIndex]?.imageUrl ?? featuredProperties[0]?.imageUrl}
                 style={{
                   top: `${featuredBaseImageTopPx}px`,
-                  backgroundImage: `url('${featuredProperties[featuredBaseImageIndex]?.imageUrl ?? featuredProperties[0]?.imageUrl}')`,
                 }}
               />
               {featuredActiveIndex > 0 ? (
-                <div
+                <LazyBackground
                   className="absolute inset-x-0 bottom-0 bg-cover bg-center will-change-transform"
                   data-alt="Featured property"
+                  src={featuredProperties[featuredOverlayImageIndex]?.imageUrl ?? featuredProperties[0]?.imageUrl}
                   style={{
                     top: `${featuredOverlayImageTopPx}px`,
-                    backgroundImage: `url('${featuredProperties[featuredOverlayImageIndex]?.imageUrl ?? featuredProperties[0]?.imageUrl}')`,
                     transform: `translateY(${featuredActiveTranslateY}px)`,
                   }}
                 />
@@ -505,8 +629,14 @@ function LandingPage() {
                             {property.details}
                           </div>
 
-                          <div className="flex items-center gap-4 text-black whitespace-nowrap">
-                            <div className="text-[18px] sm:text-[20px] tracking-[0.06em]">{property.price}</div>
+                          <div className="flex items-center gap-3 sm:gap-4 text-black">
+                            <button
+                              type="button"
+                              className="text-[12px] sm:text-[20px] tracking-[0.04em] sm:tracking-[0.06em] leading-tight text-right whitespace-nowrap"
+                              onClick={(event) => onContactScroll(event, '#connect')}
+                            >
+                              {property.price}
+                            </button>
                             <span className="text-[22px] leading-none" aria-hidden>
                               →
                             </span>
@@ -520,6 +650,7 @@ function LandingPage() {
             </div>
 
             <div
+              ref={afterSectionsRef}
               className="absolute inset-x-0 z-40 bg-[#f6f6f4]"
               style={{
                 top: `${featuredServicesTopPx}px`,
@@ -527,16 +658,16 @@ function LandingPage() {
             >
               <div id="services" className="grid grid-cols-1 lg:grid-cols-[1.15fr_0.85fr] min-h-[100svh]">
                 <div className="relative min-h-[520px] lg:min-h-[100svh] overflow-hidden">
-                  <div
+                  <LazyBackground
                     className="absolute inset-y-0 left-0 w-[38%] bg-cover bg-left opacity-35"
                     data-alt="New York skyline"
-                    style={{ backgroundImage: `url('${servicesSkylineUrl}')` }}
+                    src={servicesSkylineUrl}
                   />
                   <div className="absolute inset-y-0 left-0 w-[38%] bg-gradient-to-r from-[#f6f6f4] via-[#f6f6f4]/70 to-transparent" />
-                  <div
+                  <LazyBackground
                     className="absolute inset-0 bg-cover bg-center"
                     data-alt="Alessa in a modern interior"
-                    style={{ backgroundImage: `url('${servicesImageUrl}')` }}
+                    src={servicesImageUrl}
                   />
                 </div>
 
@@ -584,6 +715,7 @@ function LandingPage() {
                       <a
                         className="inline-flex items-center justify-center gap-5 bg-[#7a1b5c] text-white px-10 py-4 text-[12px] tracking-[0.26em] uppercase font-[var(--font-body)] font-semibold hover:bg-[#8a2a68] transition-colors"
                         href="#connect"
+                        onClick={(event) => onAnchorScroll(event, '#connect')}
                       >
                         <span>Book Now</span>
                         <span aria-hidden className="text-[14px] leading-none">
@@ -633,7 +765,7 @@ function LandingPage() {
                 </div>
               </div>
 
-              <div id="opportunities" className="bg-[#f6f6f4] text-[#111]">
+              <div id="gallery" className="bg-[#f6f6f4] text-[#111]">
                 <div className="max-w-[1500px] mx-auto px-6 lg:px-10 py-20 lg:py-24">
                   <div className="grid grid-cols-1 lg:grid-cols-[0.34fr_0.66fr] gap-14 lg:gap-16 items-center">
                     <div className="max-w-[420px]">
@@ -647,6 +779,7 @@ function LandingPage() {
                         <a
                           className="inline-flex items-center justify-center gap-5 bg-[#7a1b5c] text-white px-10 py-4 text-[12px] tracking-[0.26em] uppercase font-[var(--font-body)] font-semibold hover:bg-[#8a2a68] transition-colors"
                           href="#connect"
+                        onClick={(event) => onAnchorScroll(event, '#connect')}
                         >
                           <span>Learn More</span>
                           <span aria-hidden className="text-[14px] leading-none">
@@ -666,11 +799,11 @@ function LandingPage() {
                         }}
                       >
                         {networkingGallery.map((url, index) => (
-                          <div
+                          <LazyBackground
                             key={`${url}-${index}`}
                             className="snap-start shrink-0 w-[78%] sm:w-[46%] lg:w-[30%] aspect-square bg-cover bg-center"
                             data-alt="Networking moment"
-                            style={{ backgroundImage: `url('${url}')` }}
+                            src={url}
                           />
                         ))}
                       </div>
@@ -702,10 +835,10 @@ function LandingPage() {
               </div>
 
               <div id="affiliates" className="relative min-h-[100svh] overflow-hidden text-white">
-                <div
+                <LazyBackground
                   className="absolute inset-0 bg-cover bg-center"
                   data-alt="Affiliates background"
-                  style={{ backgroundImage: `url('${affiliatesBackgroundUrl}')` }}
+                  src={affiliatesBackgroundUrl}
                 />
                 <div className="absolute inset-0 bg-black/55" />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-black/35 to-black/55" />
@@ -730,7 +863,13 @@ function LandingPage() {
                                 {logo.label}
                               </span>
                             ) : (
-                              <img src={logo.src} alt={logo.label} className="h-8 sm:h-9 w-auto opacity-95" />
+                              <img
+                                src={logo.src}
+                                alt={logo.label}
+                                className="h-8 sm:h-9 w-auto opacity-95"
+                                loading="lazy"
+                                decoding="async"
+                              />
                             )}
                           </div>
                         ))}
@@ -746,7 +885,13 @@ function LandingPage() {
                                 {logo.label}
                               </span>
                             ) : (
-                              <img src={logo.src} alt={logo.label} className="h-8 sm:h-9 w-auto opacity-95" />
+                              <img
+                                src={logo.src}
+                                alt={logo.label}
+                                className="h-8 sm:h-9 w-auto opacity-95"
+                                loading="lazy"
+                                decoding="async"
+                              />
                             )}
                           </div>
                         ))}
@@ -759,18 +904,18 @@ function LandingPage() {
               <div id="newsletter" className="bg-[#7a1b5c] text-white">
                 <div className="grid grid-cols-1 lg:grid-cols-[0.38fr_0.22fr_0.4fr] min-h-[100svh]">
                   <div className="relative min-h-[520px] lg:min-h-[100svh] overflow-hidden">
-                    <div
+                    <LazyBackground
                       className="absolute inset-0 bg-cover bg-center"
                       data-alt="Alessa in a modern interior"
-                      style={{ backgroundImage: `url('${newsletterLeftImageUrl}')` }}
+                      src={newsletterLeftImageUrl}
                     />
                   </div>
 
                   <div className="relative min-h-[360px] lg:min-h-[100svh] overflow-hidden">
-                    <div
+                    <LazyBackground
                       className="absolute inset-0 bg-cover bg-center"
                       data-alt="New York city"
-                      style={{ backgroundImage: `url('${newsletterCenterImageUrl}')` }}
+                      src={newsletterCenterImageUrl}
                     />
                   </div>
 
@@ -845,7 +990,7 @@ function LandingPage() {
                 </div>
               </div>
 
-              <footer id="footer" className="relative bg-[#7a1b5c] text-white overflow-hidden min-h-[100svh]">
+              <footer id="connect" className="relative bg-[#7a1b5c] text-white overflow-hidden min-h-[100svh]">
                 <div className="relative max-w-[1500px] mx-auto px-6 lg:px-10 pt-14 lg:pt-16 pb-28 lg:pb-36">
                   <div className="grid grid-cols-1 lg:grid-cols-[0.32fr_0.36fr_0.32fr] gap-12 lg:gap-16">
                     <div className="text-[12px] tracking-[0.16em] uppercase text-white/90 font-[var(--font-body)] font-semibold space-y-4">
@@ -879,7 +1024,7 @@ function LandingPage() {
                           Events
                         </a>
                         <div className="flex items-center justify-between gap-6">
-                          <a className="hover:text-white transition-colors" href="#opportunities">
+                          <a className="hover:text-white transition-colors" href="#gallery">
                             NYREM
                           </a>
                           <span className="material-symbols-outlined text-[16px] leading-none text-white/70">

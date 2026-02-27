@@ -9,11 +9,11 @@ type NavbarProps = {
 
 const navItems = [
   { label: 'Home', href: '#home' },
-  { label: "Let's Connect", href: '#connect' },
+  { label: 'About', href: '#about' },
+  { label: 'Properties', href: '#properties' },
   { label: 'Services', href: '#services' },
-  { label: 'Construction', href: '#construction' },
-  { label: 'Events', href: '#events' },
-  { label: 'NYREM', href: '#nyrem' },
+  { label: 'Gallery', href: '#gallery' },
+  { label: "Let's Connect", href: '#connect' },
 ]
 
 function Navbar({ mode = 'solid' }: NavbarProps) {
@@ -200,26 +200,14 @@ function Navbar({ mode = 'solid' }: NavbarProps) {
 
             <nav className="mt-6 px-8">
               <div className="border-t border-[#651649]/35">
-                {[
-                  { label: 'HOME', href: '#home' },
-                  { label: "LET'S CONNECT", href: '#connect' },
-                  { label: 'SERVICES', href: '#services', chevron: true },
-                  { label: 'CONSTRUCTION', href: '#construction' },
-                  { label: 'EVENTS', href: '#events' },
-                  { label: 'NYREM', href: '#nyrem', chevron: true },
-                ].map((item) => (
+                {navItems.map((item) => (
                   <a
                     key={item.label}
                     href={item.href}
                     onClick={(event) => onNavLinkClick(event, item.href)}
                     className="relative block border-b border-[#651649]/35 py-4 text-center text-[15px] tracking-[0.22em] text-[#651649]/80 hover:text-[#651649] transition-colors font-semibold"
                   >
-                    <span className="font-display">{item.label}</span>
-                    {item.chevron ? (
-                      <span className="material-symbols-outlined absolute right-0 top-1/2 -translate-y-1/2 text-[20px] text-[#651649]/55">
-                        keyboard_arrow_down
-                      </span>
-                    ) : null}
+                    <span className="font-display">{item.label.toUpperCase()}</span>
                   </a>
                 ))}
               </div>
