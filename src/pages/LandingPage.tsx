@@ -1,5 +1,6 @@
 import {
   type CSSProperties,
+  type FormEvent,
   type HTMLAttributes,
   type MouseEvent,
   type ReactNode,
@@ -9,6 +10,7 @@ import {
   useRef,
   useState,
 } from 'react'
+import emailjs from '@emailjs/browser'
 import Navbar from '../components/Navbar'
 
 type FeaturedProperty = {
@@ -22,7 +24,9 @@ type FeaturedProperty = {
 type FeaturedVideo = {
   id: string
   label: string
-  posterUrl: string
+  src: string
+  posterUrl?: string
+  type?: string
 }
 
 type LazyBackgroundProps = HTMLAttributes<HTMLDivElement> & {
@@ -70,9 +74,13 @@ function LazyBackground({ src, eager = false, style, children, ...rest }: LazyBa
 }
 
 function LandingPage() {
+  const emailServiceId = 'service_398lsxo'
+  const emailContactTemplateId = 'template_hceeyqt'
+  const emailConfirmationTemplateId = 'template_h4y4ryi'
+  const emailPublicKey = '324y8Kk4rgKlq5naW'
   const heroVideoUrl = '/Alessa%20Video.mp4'
   const aboutLeftImageUrl = '/Alessa1.jpg'
-  const aboutInlineImageUrl = '/Alessa2.jpg'
+  const aboutInlineImageUrl = '/Alessa5.jpg'
   const servicesImageUrl = '/Alessa3.jpg'
   const servicesSkylineUrl = '/Alessa4.jpg'
   const newsletterLeftImageUrl = '/Alessa6.jpg'
@@ -80,21 +88,46 @@ function LandingPage() {
   const affiliatesBackgroundUrl = '/Alessa-placeholder-image.jpg'
   const networkingGallery = useMemo(
     () => [
+      '/Alessa-image.png',
+      '/Alessa-image2.png',
+      '/Screenshot_20260305_152523_Instagram.jpg',
+      '/Screenshot_20260305_152518_Instagram.jpg',
+      '/Screenshot_20260305_152515_Instagram.jpg',
+      '/Screenshot_20260305_152510_Instagram(1).jpg',
+      '/Screenshot_20260305_152504_Instagram(1).jpg',
+      '/Screenshot_20260305_151542_Instagram(1).jpg',
+      '/Screenshot_20260305_151515_Instagram(1).jpg',
+      '/Screenshot_20260305_151508_Instagram(1).jpg',
+      '/Screenshot_20260305_151504_Instagram(1).jpg',
+      '/Screenshot_20250128_190741_Instagram.jpg',
+      '/IMG-20251103-WA0081(1)(1).jpg',
+      '/IMG-20251103-WA0079.jpg',
+      '/IMG-20250916-WA0018(1).jpg',
+      '/IMG_20251213_110936_771.jpg',
+      '/IMG_20251001_170211_223.jpg',
+      '/DSC00177.jpg',
+      '/DSC_0289%20(1)(1).jpg',
+      '/20260203_194904.jpg',
+      '/20251211_210051.jpg',
+      '/20251220_164717(1).jpg',
+      '/20251220_164607(2).jpg',
+      '/20251201_161121.jpg',
+      '/20251021_204009.jpg',
+      '/20251016_005133.jpg',
+      '/20250920_155059.jpg',
+      '/20250920_154328.jpg',
       '/Alessa1.jpg',
-      '/Alessa2.jpg',
       '/Alessa3.jpg',
       '/Alessa4.jpg',
       '/Alessa5.jpg',
       '/Alessa6.jpg',
       '/Alessa7.jpg',
-      '/Alessa-placeholder-image.jpg',
     ],
     [],
   )
   const affiliatesLogos = useMemo<{ label: string; text?: boolean; src?: string }[]>(
     () => [
       { label: 'LEVAIN', text: true },
-      { label: 'NYREM', text: true },
       { label: 'SERHANT.', text: true },
       { label: 'RIVIAN', text: true },
       { label: 'WHITTY DESIGNS', text: true },
@@ -112,7 +145,21 @@ function LandingPage() {
       {
         id: 'alessa-insta-1',
         label: 'ALESSA INSTA',
+        src: '/Alessa-insta-video.mp4',
+        type: 'video/mp4',
         posterUrl: '/Alessa-placeholder-image.jpg',
+      },
+      {
+        id: 'alessa-silver-blue-2',
+        label: 'ALESSA SILVER BLUE 2',
+        src: '/Alessa%20Silver%20Blue%202.mov',
+        type: 'video/quicktime',
+      },
+      {
+        id: 'alessa-red',
+        label: 'ALESSA RED',
+        src: '/Alessa%20Red.mov',
+        type: 'video/quicktime',
       },
     ],
     [],
@@ -179,6 +226,7 @@ function LandingPage() {
   const networkingGalleryRef = useRef<HTMLDivElement | null>(null)
   const [afterSectionsHeight, setAfterSectionsHeight] = useState(0)
   const [featuredScrollProgress, setFeaturedScrollProgress] = useState(0)
+  const [newsletterStatus, setNewsletterStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle')
   const [featuredViewportHeight, setFeaturedViewportHeight] = useState(() => {
     if (typeof window === 'undefined') {
       return 0
@@ -323,6 +371,34 @@ function LandingPage() {
     window.history.replaceState(null, '', href)
     window.scrollTo({ top: targetTop, behavior: 'smooth' })
   }
+  const onNewsletterSubmit = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
+    if (newsletterStatus === 'sending') {
+      return
+    }
+    const form = event.currentTarget
+    const formData = new FormData(form)
+    const params = {
+      firstName: String(formData.get('firstName') ?? '').trim(),
+      lastName: String(formData.get('lastName') ?? '').trim(),
+      email: String(formData.get('email') ?? '').trim(),
+    }
+    if (!params.email) {
+      setNewsletterStatus('error')
+      return
+    }
+    try {
+      setNewsletterStatus('sending')
+      await Promise.all([
+        emailjs.send(emailServiceId, emailContactTemplateId, params, emailPublicKey),
+        emailjs.send(emailServiceId, emailConfirmationTemplateId, params, emailPublicKey),
+      ])
+      form.reset()
+      setNewsletterStatus('success')
+    } catch {
+      setNewsletterStatus('error')
+    }
+  }
 
   return (
     <div className="alessa-theme bg-black text-white font-display min-h-screen">
@@ -444,7 +520,7 @@ function LandingPage() {
                 }}
               />
               <div className="relative">
-                <div className="text-[12px] tracking-[0.34em] uppercase text-[#b53d79] font-[var(--font-body)] font-semibold">
+                <div className="text-[12px] tracking-[0.34em] uppercase text-[#111] font-[var(--font-body)] font-semibold">
                   About Alessa
                 </div>
                 <h2 className="mt-4 text-[44px] sm:text-[52px] leading-[0.95] tracking-wide">
@@ -457,7 +533,7 @@ function LandingPage() {
                   done over $100M in sales, encompassing commercial transactions and luxury properties throughout Manhattan
                   and Brooklyn.
                 </p>
-                <p className="mt-6 text-[13px] leading-6 text-[#b53d79] font-[var(--font-body)] font-semibold max-w-[420px]">
+                <p className="mt-6 text-[13px] leading-6 text-[#111] font-[var(--font-body)] font-semibold max-w-[420px]">
                   “I offer tailored consultations, expert advice, and a seamless experience throughout your real estate
                   journey,” says Alessa. “My promise to you is simple: listen to your needs, execute on your goals, and
                   ensure you feel confident and supported every step of the way, 24/7.”
@@ -681,30 +757,50 @@ function LandingPage() {
                     <div className="mt-12 space-y-10">
                       <div>
                         <div className="text-[#b53d79] text-[20px] tracking-[0.08em]">
-                          REAL ESTATE CONSULTATION
+                          REAL ESTATE ADVISORY
                         </div>
                         <p className="mt-4 text-[13px] leading-6 text-[#3a3a3a] font-[var(--font-body)]">
-                          Expert guidance for new clients interested in buying, selling, and investing in real estate.
+                          We provide strategic guidance for clients seeking to buy, sell, or invest in residential and
+                          commercial real estate. Our services cover all New York City boroughs, with additional access to
+                          trusted partners nationwide and internationally. Through our global network, we assist clients
+                          with domestic and international real estate opportunities, ensuring seamless transactions and
+                          high-quality investment options.
                         </p>
                       </div>
 
                       <div>
                         <div className="text-[#b53d79] text-[20px] tracking-[0.08em]">
-                          NETWORKING
+                          PROFESSIONAL NETWORKING &amp; MENTORSHIP
                         </div>
                         <p className="mt-4 text-[13px] leading-6 text-[#3a3a3a] font-[var(--font-body)]">
-                          A mentorship program designed to help professionals master networking and expand their industry
-                          connections with the support of experienced leaders.
+                          Our networking mentorship program is designed for professionals who want to master
+                          relationship-building and expand their presence within competitive industries. Clients gain
+                          access to our curated book of business and are introduced to established professionals across
+                          real estate, finance, development, and related industries.
                         </p>
                       </div>
 
                       <div>
                         <div className="text-[#b53d79] text-[20px] tracking-[0.08em]">
-                          EVENTS CURATION
+                          EVENT CURATION &amp; BRAND EXPERIENCES
                         </div>
                         <p className="mt-4 text-[13px] leading-6 text-[#3a3a3a] font-[var(--font-body)]">
-                          A comprehensive mentorship program for event professionals aiming to elevate their skills in
-                          event curation, marketing, and production.
+                          We design and curate high-level events for individuals, brands, and businesses. From private
+                          networking gatherings to client appreciation events and industry functions, we oversee concept
+                          development, marketing strategy, and full production to create memorable and impactful
+                          experiences.
+                        </p>
+                      </div>
+
+                      <div>
+                        <div className="text-[#b53d79] text-[20px] tracking-[0.08em]">
+                          CONSTRUCTION &amp; DEVELOPMENT SERVICES
+                        </div>
+                        <p className="mt-4 text-[13px] leading-6 text-[#3a3a3a] font-[var(--font-body)]">
+                          We connect clients with trusted, vetted construction teams, contractors, architects, and
+                          development specialists. Whether for renovations, commercial build-outs, or new development
+                          projects, we ensure clients work with reputable professionals capable of delivering high-quality
+                          results.
                         </p>
                       </div>
                     </div>
@@ -749,8 +845,8 @@ function LandingPage() {
                             poster={video.posterUrl}
                           >
                             <source
-                              src="/Alessa-insta-video.mp4"
-                              type="video/mp4"
+                              src={video.src}
+                              type={video.type ?? 'video/mp4'}
                             />
                           </video>
                         </div>
@@ -936,7 +1032,7 @@ function LandingPage() {
                         your inbox. Don&apos;t miss out!
                       </p>
 
-                      <form className="mt-16" onSubmit={(event) => event.preventDefault()}>
+                      <form className="mt-16" onSubmit={onNewsletterSubmit}>
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-10">
                           <label className="block">
                             <div className="text-[12px] tracking-[0.18em] text-white/70 font-[var(--font-body)] font-semibold">
@@ -978,10 +1074,21 @@ function LandingPage() {
 
                         <button
                           type="submit"
-                          className="mt-12 w-full h-12 bg-[#b53d79] text-white text-[13px] font-[var(--font-body)] font-semibold hover:bg-[#c04a86] transition-colors"
+                          className="mt-12 w-full h-12 bg-[#b53d79] text-white text-[13px] font-[var(--font-body)] font-semibold hover:bg-[#c04a86] transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
+                          disabled={newsletterStatus === 'sending'}
                         >
-                          Submit
+                          {newsletterStatus === 'sending' ? 'Sending...' : 'Submit'}
                         </button>
+                        {newsletterStatus === 'success' ? (
+                          <div className="mt-4 text-[12px] tracking-[0.18em] text-white/85 font-[var(--font-body)] font-semibold">
+                            Thank you! Your message has been sent.
+                          </div>
+                        ) : null}
+                        {newsletterStatus === 'error' ? (
+                          <div className="mt-4 text-[12px] tracking-[0.18em] text-white/85 font-[var(--font-body)] font-semibold">
+                            Please check your details and try again.
+                          </div>
+                        ) : null}
                       </form>
                     </div>
                   </div>
@@ -1021,14 +1128,6 @@ function LandingPage() {
                         <a className="block hover:text-white transition-colors" href="#events">
                           Events
                         </a>
-                        <div className="flex items-center justify-between gap-6">
-                          <a className="hover:text-white transition-colors" href="#gallery">
-                            NYREM
-                          </a>
-                          <span className="material-symbols-outlined text-[16px] leading-none text-white/70">
-                            keyboard_arrow_down
-                          </span>
-                        </div>
                         <a className="block hover:text-white transition-colors" href="#about">
                           About Alessa
                         </a>
@@ -1040,15 +1139,6 @@ function LandingPage() {
 
                     <div className="text-[12px] tracking-[0.16em] uppercase text-white/90 font-[var(--font-body)] font-semibold">
                       <div className="space-y-5">
-                        <a className="block hover:text-white transition-colors" href="#privacy">
-                          Privacy Policy
-                        </a>
-                        <a className="block hover:text-white transition-colors" href="#shipping">
-                          Shipping &amp; Return Policy
-                        </a>
-                        <a className="block hover:text-white transition-colors" href="#terms">
-                          Terms &amp; Conditions
-                        </a>
                         <div className="pt-6 text-white/80 normal-case tracking-[0.08em] text-[12px] font-semibold">
                           © 2025 By Alessa Aichinger
                         </div>
@@ -1064,7 +1154,7 @@ function LandingPage() {
                       <div className="flex flex-wrap items-center gap-5">
                         <a
                           className="h-12 w-12 rounded-full border border-white/40 text-white/85 hover:text-white hover:border-white/70 transition-colors inline-flex items-center justify-center"
-                          href="https://www.instagram.com/realestate_withalessa"
+                          href="https://www.instagram.com/iamalessaxo/"
                           rel="noreferrer"
                           target="_blank"
                           aria-label="Instagram"
@@ -1075,18 +1165,18 @@ function LandingPage() {
                         </a>
                         <a
                           className="h-12 w-12 rounded-full border border-white/40 text-white/85 hover:text-white hover:border-white/70 transition-colors inline-flex items-center justify-center"
-                          href="https://www.facebook.com/realestatewithalessa"
+                          href="https://www.tiktok.com/@realestatewithalessa?_r=1&_t=ZS-94mF01Gsfyv"
                           rel="noreferrer"
                           target="_blank"
-                          aria-label="Facebook"
+                          aria-label="TikTok"
                         >
                           <svg viewBox="0 0 24 24" className="h-5 w-5" fill="currentColor" aria-hidden>
-                            <path d="M13.5 9H16V6h-2.5C11.57 6 10 7.57 10 9.5V12H8v3h2v6h3v-6h2.5l.5-3H13v-2.5c0-.55.45-1.5 1.5-1.5Z" />
+                            <path d="M14.9 3.5c.46 1.76 1.84 3.14 3.6 3.6v2.56c-1.6.04-3.1-.42-4.5-1.32v6.02a6.06 6.06 0 1 1-5.3-6.01v2.67a3.44 3.44 0 1 0 2.7 3.34V3.5h3.5Z" />
                           </svg>
                         </a>
                         <a
                           className="h-12 w-12 rounded-full border border-white/40 text-white/85 hover:text-white hover:border-white/70 transition-colors inline-flex items-center justify-center"
-                          href="https://www.linkedin.com/in/alessaaichinger/"
+                          href="https://www.linkedin.com/in/alessaaichinger"
                           rel="noreferrer"
                           target="_blank"
                           aria-label="LinkedIn"
