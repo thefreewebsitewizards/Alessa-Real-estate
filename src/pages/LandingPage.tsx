@@ -26,7 +26,6 @@ type FeaturedVideo = {
   label: string
   src: string
   posterUrl?: string
-  type?: string
 }
 
 type LazyBackgroundProps = HTMLAttributes<HTMLDivElement> & {
@@ -146,20 +145,17 @@ function LandingPage() {
         id: 'alessa-insta-1',
         label: 'ALESSA INSTA',
         src: '/Alessa-insta-video.mp4',
-        type: 'video/mp4',
         posterUrl: '/Alessa-placeholder-image.jpg',
       },
       {
         id: 'alessa-silver-blue-2',
         label: 'ALESSA SILVER BLUE 2',
-        src: '/Alessa%20Silver%20Blue%202.mov',
-        type: 'video/quicktime',
+        src: '/Alessa Silver Blue 2.mov',
       },
       {
         id: 'alessa-red',
         label: 'ALESSA RED',
-        src: '/Alessa%20Red.mov',
-        type: 'video/quicktime',
+        src: '/Alessa Red.mov',
       },
     ],
     [],
@@ -843,12 +839,8 @@ function LandingPage() {
                             playsInline
                             preload="metadata"
                             poster={video.posterUrl}
-                          >
-                            <source
-                              src={video.src}
-                              type={video.type ?? 'video/mp4'}
-                            />
-                          </video>
+                            src={encodeURI(video.src)}
+                          />
                         </div>
                         <div className="mt-10 text-[18px] tracking-[0.08em] text-[#b53d79] text-center">
                           {video.label}
