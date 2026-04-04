@@ -171,46 +171,46 @@ function LandingPage() {
   const featuredProperties = useMemo<FeaturedProperty[]>(
     () => [
       {
-        id: '281-park-ave-south',
-        address: '281 PARK AVE SOUTH',
-        details: 'Commercial · 42,500 Sq Ft · SERHANT. Signature',
-        price: 'Price Upon Request',
-        imageUrl: 'https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=1400&q=70',
+        id: '217-west-57th-street-86e',
+        address: '217 WEST 57TH STREET #86E',
+        details: 'Featured Listing',
+        price: '$28,900,000',
+        imageUrl: '/$28,900,000.jpeg',
       },
       {
-        id: '56-north-moore-st',
-        address: '56 NORTH MOORE ST',
-        details: 'Commercial · SERHANT. Signature',
-        price: '$75,000,000',
-        imageUrl: 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=1400&q=70',
+        id: '50-west-66th-street-62',
+        address: '50 WEST 66TH STREET #62',
+        details: 'Featured Listing',
+        price: '$85,000,000',
+        imageUrl: '/$85,000,000.jpeg',
       },
       {
-        id: '432-park-avenue-69',
-        address: '432 PARK AVENUE 69',
-        details: '5 Beds · 6 Full Baths · 8,040 Sq Ft · SERHANT. Signature',
-        price: '$52,000,000',
-        imageUrl: 'https://images.unsplash.com/photo-1512918728675-ed5a9ecdebfd?auto=format&fit=crop&w=1400&q=70',
+        id: '217-west-57th-street-110',
+        address: '217 WEST 57TH STREET #110',
+        details: 'Featured Listing',
+        price: '$47,900,000',
+        imageUrl: '/$47,900,000.jpeg',
       },
       {
-        id: '35-east-62nd-street',
-        address: '35 E 62ND STREET',
-        details: '0 Beds · 5 Full Baths · 25,000 Sq Ft · Listing Courtesy Melissa Karen Post with Serhant',
-        price: '$49,900,000',
-        imageUrl: 'https://images.unsplash.com/photo-1501183638710-841dd1904471?auto=format&fit=crop&w=1400&q=70',
+        id: '252-south-street-77j',
+        address: '252 SOUTH STREET #77J',
+        details: 'Featured Listing',
+        price: '$6,450,000',
+        imageUrl: '/$6,450,000.jpeg',
       },
       {
-        id: '125-e-65th-street',
-        address: '125 E 65TH STREET',
-        details: '6 Beds · 7 Full Baths · 14,346 Sq Ft · Listing Courtesy Marc Riedel with Serhant',
-        price: '$45,500,000',
-        imageUrl: 'https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=1400&q=70',
+        id: '53-west-53rd-street-66',
+        address: '53 WEST 53RD STREET #66',
+        details: 'Featured Listing',
+        price: '$34,400,000',
+        imageUrl: '/$34,400,000.jpeg',
       },
       {
-        id: '20-greene-st-ph',
-        address: '20 GREENE STREET PH',
-        details: '3 Beds · 4 Full Baths · 6,814 Sq Ft',
-        price: '$35,950,000',
-        imageUrl: 'https://images.unsplash.com/photo-1502005229762-cf1b2da7c5d6?auto=format&fit=crop&w=1400&q=70',
+        id: '53-west-53rd-street-ph78',
+        address: '53 WEST 53RD STREET #PH78',
+        details: 'Featured Listing',
+        price: '$64,730,000',
+        imageUrl: '/$64,730,000.jpeg',
       },
     ],
     [],
@@ -686,7 +686,8 @@ function LandingPage() {
                         transform: `translateY(${translateY}px)`,
                         zIndex: 30 + index,
                       }}
-                      href={`#${property.id}`}
+                      href="#contact-form"
+                      onClick={(event) => onContactScroll(event, '#contact-form')}
                       aria-current={isActive ? 'true' : undefined}
                     >
                       <div className="max-w-[1500px] mx-auto px-6 lg:px-10 h-[54px] flex items-center">
@@ -700,13 +701,9 @@ function LandingPage() {
                           </div>
 
                           <div className="flex items-center gap-3 sm:gap-4 text-black">
-                            <button
-                              type="button"
-                              className="text-[12px] sm:text-[20px] tracking-[0.04em] sm:tracking-[0.06em] leading-tight text-right whitespace-nowrap"
-                              onClick={(event) => onContactScroll(event, '#connect')}
-                            >
+                            <span className="text-[12px] sm:text-[20px] tracking-[0.04em] sm:tracking-[0.06em] leading-tight text-right whitespace-nowrap">
                               {property.price}
-                            </button>
+                            </span>
                             <span className="text-[22px] leading-none" aria-hidden>
                               →
                             </span>
@@ -1024,7 +1021,7 @@ function LandingPage() {
                         your inbox. Don&apos;t miss out!
                       </p>
 
-                      <form className="mt-16" onSubmit={onNewsletterSubmit}>
+                      <form id="contact-form" className="mt-16" onSubmit={onNewsletterSubmit}>
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-10">
                           <label className="block">
                             <div className="text-[12px] tracking-[0.18em] text-white/70 font-[var(--font-body)] font-semibold">
