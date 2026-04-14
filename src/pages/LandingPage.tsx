@@ -23,7 +23,6 @@ type FeaturedProperty = {
 
 type FeaturedVideo = {
   id: string
-  label: string
   src: string
   posterUrl?: string
 }
@@ -143,18 +142,15 @@ function LandingPage() {
     () => [
       {
         id: 'alessa-insta-1',
-        label: 'ALESSA INSTA',
         src: '/Alessa-insta-video.mp4',
         posterUrl: '/Alessa-placeholder-image.jpg',
       },
       {
         id: 'alessa-silver-blue-2',
-        label: 'ALESSA SILVER BLUE 2',
         src: '/Alessa Silver Blue 2.mov',
       },
       {
         id: 'alessa-red',
-        label: 'ALESSA RED',
         src: '/Alessa Red.mov',
       },
     ],
@@ -839,9 +835,6 @@ function LandingPage() {
                             src={encodeURI(video.src)}
                           />
                         </div>
-                        <div className="mt-10 text-[18px] tracking-[0.08em] text-[#b53d79] text-center">
-                          {video.label}
-                        </div>
                       </div>
                     ))}
                   </div>
@@ -862,7 +855,7 @@ function LandingPage() {
                         <a
                           className="inline-flex items-center justify-center gap-5 bg-[#7a1b5c] text-white px-10 py-4 text-[12px] tracking-[0.26em] uppercase font-[var(--font-body)] font-semibold hover:bg-[#8a2a68] transition-colors"
                           href="#connect"
-                        onClick={(event) => onAnchorScroll(event, '#connect')}
+                          onClick={(event) => onAnchorScroll(event, '#connect')}
                         >
                           <span>Learn More</span>
                           <span aria-hidden className="text-[14px] leading-none">
@@ -996,7 +989,7 @@ function LandingPage() {
 
                   <div className="relative min-h-[360px] lg:min-h-[100svh] overflow-hidden">
                     <LazyBackground
-                      className="absolute inset-0 bg-cover bg-center"
+                      className="absolute inset-0 bg-cover bg-top"
                       data-alt="New York city"
                       src={newsletterCenterImageUrl}
                     />
