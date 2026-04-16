@@ -410,13 +410,15 @@ function LandingPage() {
             <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/10 to-black/35" />
             <Navbar mode="overlay" />
 
-            <button
+            <a
+              href="https://www.instagram.com/iamalessaxo/"
+              target="_blank"
+              rel="noreferrer"
               className="fixed right-7 bottom-7 z-[60] h-14 w-14 rounded-full bg-[#b53d79] shadow-[0_10px_30px_rgba(0,0,0,0.35)] flex items-center justify-center hover:bg-[#c04a86] transition-colors"
-              type="button"
-              aria-label="Chat"
+              aria-label="Chat on Instagram"
             >
               <span className="material-symbols-outlined text-white text-[26px] leading-none">mode_comment</span>
-            </button>
+            </a>
           </div>
 
           <div className="relative w-full h-[100svh] min-h-[720px] overflow-hidden grid grid-rows-3 md:hidden">
@@ -438,13 +440,15 @@ function LandingPage() {
             ))}
             <Navbar mode="overlay" />
 
-            <button
+            <a
+              href="https://www.instagram.com/iamalessaxo/"
+              target="_blank"
+              rel="noreferrer"
               className="fixed right-7 bottom-7 z-[60] h-14 w-14 rounded-full bg-[#b53d79] shadow-[0_10px_30px_rgba(0,0,0,0.35)] flex items-center justify-center hover:bg-[#c04a86] transition-colors"
-              type="button"
-              aria-label="Chat"
+              aria-label="Chat on Instagram"
             >
               <span className="material-symbols-outlined text-white text-[26px] leading-none">mode_comment</span>
-            </button>
+            </a>
           </div>
 
           <div className="bg-[#7a1b5c]/70 backdrop-blur-sm">
